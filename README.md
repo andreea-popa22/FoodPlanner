@@ -9,7 +9,7 @@ ___
 ### ◻️ Purpose of the application:
 The purpose of the application is to improve the lifestyle of users by facilitating the organization of meals and combating food waste.
 
-### ◻️ Application Objectives:
+### ◻️ Application objectives:
 The application aims to achieve the following objectives:
 
 1. registration and login in the application
