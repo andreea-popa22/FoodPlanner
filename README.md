@@ -1,4 +1,4 @@
-# Food Planner
+# 🥑Food Planner
 
 ## 💬 An ASP .NET MVC application for planning your meals and discovering new recipes
 
@@ -6,10 +6,10 @@ ___
 
 
 
-### Purpose of the application:
+### ◻️ Purpose of the application:
 The purpose of the application is to improve the lifestyle of users by facilitating the organization of meals and combating food waste.
 
-### Application Objectives:
+### ◻️ Application Objectives:
 The application aims to achieve the following objectives:
 
 1. registration and login in the application
@@ -22,5 +22,5 @@ The application aims to achieve the following objectives:
 8. notifying the user of the macronutrients you want
 9. generating a weekly shopping list
 
-### Target group:
+### ◻️ Target group:
 Different users: ordinary people, people who are passionate about cooking, people with various food intolerances.
