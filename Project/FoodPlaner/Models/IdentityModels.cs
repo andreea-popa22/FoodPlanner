@@ -23,10 +23,14 @@ namespace FoodPlaner.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext,
+           FoodPlaner.Migrations.Configuration>("DefaultConnection"));
         }
-
+        public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public static ApplicationDbContext Create()
         {
+
             return new ApplicationDbContext();
         }
     }
