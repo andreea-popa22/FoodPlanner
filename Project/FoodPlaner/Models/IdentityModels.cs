@@ -28,10 +28,19 @@ namespace FoodPlaner.Models
         }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        //public DbSet<User> MyUsers { get; set; }
+
         public static ApplicationDbContext Create()
         {
-
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Review>().HasRequired(r => r.User).WithMany(u => u.Reviews).HasForeignKey(r => r.UserId).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Recipe>().HasRequired(r => r.User).WithMany(u => u.Recipes).HasForeignKey(r => r.UserId).WillCascadeOnDelete(false);
+            modelBuilder.Entity<Review>().HasRequired(r => r.Recipe).WithMany(r => r.Reviews).HasForeignKey(r => r.RecipeId).WillCascadeOnDelete(false);
         }
     }
 }
