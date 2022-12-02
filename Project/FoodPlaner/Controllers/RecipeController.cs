@@ -7,14 +7,14 @@ using System.Web.Mvc;
 
 namespace FoodPlaner.Controllers
 {
-    public class RecipesController : Controller
+    public class RecipeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Recipes
         public ActionResult Index()
         {
-            return View();
+            return View(db.Recipes.ToList());
         }
 
         public ActionResult Show(int id)

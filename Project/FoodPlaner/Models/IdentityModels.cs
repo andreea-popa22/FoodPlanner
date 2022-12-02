@@ -28,7 +28,7 @@ namespace FoodPlaner.Models
         }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Review> Reviews { get; set; }
-        //public DbSet<User> MyUsers { get; set; }
+        public DbSet<User> MyUsers { get; set; }
 
         public static ApplicationDbContext Create()
         {

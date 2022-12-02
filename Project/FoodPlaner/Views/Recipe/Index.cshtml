@@ -1,0 +1,33 @@
+﻿@model IEnumerable<FoodPlaner.Models.Recipe>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Recipes</title>
+    <link rel="stylesheet" type="text/css" media="all" href="~/Content/site.css" />
+</head>
+<body>
+
+    @foreach (var item in Model)
+    {
+        <h2>@item.RecipeId</h2>
+        <p>Ingredients: @item.Ingredients</p>
+        <p>Time: @item.Time</p>
+        <a class="btn btn-info pull-left" href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
+        @*<a class="btn btn-primary pull-left" href="/Doctor/Edit/@item.DoctorId" style="margin-left:5px;">Edit</a>
+            <a class="btn btn-info pull-left" href="/Doctor/Show/@item.DoctorId" style="margin-left:5px;">Details</a>
+            <form method="post" action="/Doctor/Delete/@item.DoctorId">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="btn btn-danger pull-left" style="margin-left:5px;" type="submit">Delete</button>
+            </form>*@
+
+    }
+
+
+    <br />
+    @*<a class="btn btn-success" href="/Doctor/New">Add Doctor</a>*@
+    <br /><br />
+</body>
+</html>
