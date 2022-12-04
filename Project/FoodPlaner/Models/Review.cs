@@ -11,7 +11,6 @@ namespace FoodPlaner.Models
     public class Review
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ReviewId { get; set; }
         public int RecipeId { get; set; }
         public int UserId { get; set; }

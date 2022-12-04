@@ -11,8 +11,8 @@ namespace FoodPlaner.Models
     public class Recipe
     {
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int RecipeId { get; set; }
+        public string RecipeName { get; set; }
         public int UserId { get; set; }
         public string Ingredients { get; set; }
         public int Time { get; set; }

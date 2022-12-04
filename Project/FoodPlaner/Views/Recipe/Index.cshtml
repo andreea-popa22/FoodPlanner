@@ -12,22 +12,14 @@
 
     @foreach (var item in Model)
     {
-        <h2>@item.RecipeId</h2>
+        <h2>@item.RecipeName</h2>
         <p>Ingredients: @item.Ingredients</p>
         <p>Time: @item.Time</p>
         <a class="btn btn-info pull-left" href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
-        @*<a class="btn btn-primary pull-left" href="/Doctor/Edit/@item.DoctorId" style="margin-left:5px;">Edit</a>
-            <a class="btn btn-info pull-left" href="/Doctor/Show/@item.DoctorId" style="margin-left:5px;">Details</a>
-            <form method="post" action="/Doctor/Delete/@item.DoctorId">
-                @Html.HttpMethodOverride(HttpVerbs.Delete)
-                <button class="btn btn-danger pull-left" style="margin-left:5px;" type="submit">Delete</button>
-            </form>*@
-
+        <br/> <br/>
     }
-
-
-    <br />
-    @*<a class="btn btn-success" href="/Doctor/New">Add Doctor</a>*@
-    <br /><br />
+    
+    @*<a class="btn btn-success" href="/Recipe/New">Add recipe</a>*@
+    
 </body>
 </html>

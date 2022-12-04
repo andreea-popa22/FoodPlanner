@@ -4,31 +4,24 @@
     ViewBag.Title = "Recipe details";
 }
 
-<h2>View</h2>
-
-@*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
-
-<p>
-    User id: @Model.UserId
-</p>
-<p>
-    Inredients: @Model.Ingredients
-</p>
-<p>
-    Time: @Model.Time
-</p>
-<p>
-    Intolerances: @Model.Intolerances
-</p>
-<p>
-    Cuisine: @Model.Cuisine
-</p>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id=@Model.RecipeId }) |
-    @Html.ActionLink("Details", "Details", new { id= @Model.RecipeId }) |
-    @Html.ActionLink("Delete", "Delete", new { id= @Model.RecipeId })
+    <h2>@Model.RecipeName</h2>
+
+    <p> Author: @ViewBag.userName </p>
+    <p> Ingredients: @Model.Ingredients </p>
+    <p> Time: @Model.Time </p>
+    <p> Intolerances: @Model.Intolerances </p>
+    <p> Cuisine: @Model.Cuisine </p>
+
+    <div class="actionButtonsClass">
+        @Html.ActionLink("Edit", "Edit", new { id = @Model.RecipeId })
+    </div>
+    <div style="display: inline-block; float:left; margin-left:23rem;" class="delete-button">
+        <form method="post" action="/Recipe/Delete/@Model.RecipeId">
+            @Html.HttpMethodOverride(HttpVerbs.Delete)
+            <button class="glyphicon glyphicon-trash" style="border: none; color: red; background: transparent" type="submit"></button>
+        </form>
+    </div>
+    <br />
+    <a class="btn btn-primary" href="/Recipe/Index" style="margin-bottom: 1rem;">Back to recipes</a>
 </div>
-<br/>
-<a class="btn btn-primary" href="/Recipe/Index" style="margin-bottom: 1rem;">Back to recipes</a>
