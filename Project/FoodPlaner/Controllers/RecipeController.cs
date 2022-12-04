@@ -21,7 +21,7 @@ namespace FoodPlaner.Controllers
         public ActionResult Show(int id)
         {
             Recipe recipe = db.Recipes.Find(id);
-            User user = db.MyUsers.Find(recipe.UserId);
+            ApplicationUser user = db.Users.Find(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
             return View(recipe);
         }
