@@ -9,17 +9,19 @@
     <link rel="stylesheet" type="text/css" media="all" href="~/Content/site.css" />
 </head>
 <body>
+    <a class="btn btn-primary" style="float:right; margin-top: 1%"   href="/Recipe/New">
+    Add new recipe    
+    </a>
+        @foreach (var item in Model)
+        {
+            <h2>@item.RecipeName</h2>
+            <p>Ingredients: @item.Ingredients</p>
+            <p>Time: @item.Time</p>
+            <a class="btn btn-info pull-left" href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
+            <br /> <br />
+        }
 
-    @foreach (var item in Model)
-    {
-        <h2>@item.RecipeName</h2>
-        <p>Ingredients: @item.Ingredients</p>
-        <p>Time: @item.Time</p>
-        <a class="btn btn-info pull-left" href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
-        <br/> <br/>
-    }
-    
-    @*<a class="btn btn-success" href="/Recipe/New">Add recipe</a>*@
-    
+        @*<a class="btn btn-success" href="/Recipe/New">Add recipe</a>*@
+
 </body>
 </html>
