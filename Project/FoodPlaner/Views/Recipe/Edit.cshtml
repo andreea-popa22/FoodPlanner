@@ -1,0 +1,50 @@
+﻿@model FoodPlaner.Models.Recipe
+
+
+<h1>Edit recipe</h1>
+<hr />
+
+@using (Html.BeginForm("New", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false, "", new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+
+    @Html.Label("RecipeName", "Recipe name")
+    <br />
+    @Html.TextBox("RecipeName", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.RecipeName, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Ingredients", "Ingredients")
+    <br />
+    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 200px;" })
+    @Html.ValidationMessageFor(m => m.Ingredients, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Cuisine", "Cuisine")
+    <br />
+    @Html.TextArea("ProductPrice", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cuisine, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Intolerances", "Intolerances")
+    <br />
+    @Html.TextArea("Intolerances", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Intolerances, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+
+    <br />
+    <br />
+    @Html.Label("Time", "Time")
+    <br />
+    @Html.TextArea("Time", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Intolerances, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+
+
+    //@Html.ValidationMessageFor(m => m.Photo, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    <button class="btn btn-lg btn-success" style="background-color: #25CCF7; box-shadow: 0 10px 10px #D6A2E8;" type="submit">Save changes </button>
+}

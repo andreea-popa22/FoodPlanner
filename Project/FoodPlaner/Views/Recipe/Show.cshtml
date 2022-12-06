@@ -1,0 +1,40 @@
+﻿@model FoodPlaner.Models.Recipe
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title = Recipe details</title>
+        <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
+    </head>
+    <body>
+        <br />
+        <br />
+        <div class="container">
+            <div class="col-md-6">
+                <div class="recipe panel panel-default radius-div">
+                    <h2>@Model.RecipeName</h2>
+
+                    <p> Author: @ViewBag.userName </p>
+                    <p> Ingredients:</p>
+                    <ul style="list-style-type:circle" id="ingredientList">
+                        @foreach (string ingredient in Model.Ingredients.Split(','))
+                        {
+                            <li> @ingredient</li>
+                        }
+                    </ul>
+                    <p> Time: @Model.Time </p>
+                    <p> Description: </p>
+                    <p> @Model.Description</p>
+                    <p> Intolerances: @Model.Intolerances </p>
+                    <p> Cuisine: @Model.Cuisine </p>
+
+                    <a class="btn btn-primary" href="/Recipe/Index" style="margin-bottom: 1rem;">Back</a>
+                    <a class="btn btn-warning" href="/Recipe/Edit/@Model.RecipeId" style="margin-bottom: 1rem;">Edit</a>
+                    <a class="btn btn-danger" href="/Recipe/Delete/@Model.RecipeId" style="margin-bottom: 1rem;">Delete</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

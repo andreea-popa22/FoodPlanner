@@ -1,0 +1,54 @@
+﻿@model FoodPlaner.Models.Recipe
+
+
+<h1>Add recipe</h1>
+<hr />
+
+@using (Html.BeginForm("New", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false, "", new { @class = ".textArea" })
+
+    @Html.Label("RecipeName", "Recipe name")
+    <br />
+    @Html.TextArea("RecipeName", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.RecipeName, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Ingredients", "Ingredients")
+    <br />
+    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 100px;"})
+    @Html.ValidationMessageFor(m => m.Ingredients, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Description", "Recipe description")
+    <br />
+    @Html.TextArea("Description", null, new { @class = "form-control", style = "min-height: 200px;" })
+    @Html.ValidationMessageFor(m => m.Description, null, new { @class=".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Cuisine", "Cuisine")
+    <br />
+    @Html.TextArea("Cuisine", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Cuisine, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Intolerances", "Intolerances")
+    <br />
+    @Html.TextArea("Intolerances", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Intolerances, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Time", "Time")
+    <br />
+    @Html.TextArea("Time", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Intolerances, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    <button class="btn btn-lg btn-success" style="background-color: #25CCF7;" type="submit">Add recipe</button>
+}
