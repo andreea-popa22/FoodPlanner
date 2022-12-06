@@ -22,3 +22,10 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.textArea {
+    max-height: 50px;
+    color: #F8EFBA;
+    text-shadow: 2px 2px #ff0000;
+    font-style: italic;
+}

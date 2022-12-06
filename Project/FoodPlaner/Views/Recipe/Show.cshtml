@@ -4,24 +4,34 @@
     ViewBag.Title = "Recipe details";
 }
 
-<div>
-    <h2>@Model.RecipeName</h2>
+<br/>
+<br/>
+<div class="col-md-6">
+    <div class="panel panel-default radius-div" style="padding-left:15px">
+        <h2>@Model.RecipeName</h2>
 
-    <p> Author: @ViewBag.userName </p>
-    <p> Ingredients: @Model.Ingredients </p>
-    <p> Time: @Model.Time </p>
-    <p> Intolerances: @Model.Intolerances </p>
-    <p> Cuisine: @Model.Cuisine </p>
+        <p> Author: @ViewBag.userName </p>
+        <p> Ingredients:</p>
+        <ul style="list-style-type:circle" id="ingredientList">
+            @foreach (string ingredient in Model.Ingredients.Split(','))
+            {
+                <li> @ingredient</li>
+            }
+        </ul>
+        <p> Time: @Model.Time </p>
+        <p> Description: </p>
+        <p> @Model.Description</p>
+        <p> Intolerances: @Model.Intolerances </p>
+        <p> Cuisine: @Model.Cuisine </p>
 
-    <div class="actionButtonsClass">
-        @Html.ActionLink("Edit", "Edit", new { id = @Model.RecipeId })
+        <a class="glyphicon glyphicon-pencil" href="/Recipe/Edit/@Model.RecipeId" style="margin-left:2rem;"></a>
+        <div style="display: inline-block; float:left; margin-left:23rem;" class="delete-button">
+            <form method="post" action="/Recipe/Delete/@Model.RecipeId">
+                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                <button class="glyphicon glyphicon-trash" style="border: none; color: red; background: transparent" type="submit"></button>
+            </form>
+        </div>
+        <br />
+        <a class="btn btn-primary" href="/Recipe/Index" style="margin-bottom: 1rem;">Back</a>
     </div>
-    <div style="display: inline-block; float:left; margin-left:23rem;" class="delete-button">
-        <form method="post" action="/Recipe/Delete/@Model.RecipeId">
-            @Html.HttpMethodOverride(HttpVerbs.Delete)
-            <button class="glyphicon glyphicon-trash" style="border: none; color: red; background: transparent" type="submit"></button>
-        </form>
-    </div>
-    <br />
-    <a class="btn btn-primary" href="/Recipe/Index" style="margin-bottom: 1rem;">Back to recipes</a>
 </div>
