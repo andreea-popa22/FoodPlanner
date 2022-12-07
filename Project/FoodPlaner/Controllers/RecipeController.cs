@@ -10,6 +10,7 @@ namespace FoodPlaner.Controllers
 {
     public class RecipeController : Controller
     {
+        private int _perPage = 3;
         private ApplicationDbContext db = new ApplicationDbContext();
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -22,9 +23,33 @@ namespace FoodPlaner.Controllers
             _userManager = userManager;
         }
         // GET: Recipes
-        public ActionResult Index()
+        public ActionResult Index(string search)
         {
-            return View(db.Recipes.ToList());
+            var recipes = db.Recipes.ToList();
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+                recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
+                           .ToList();
+            }
+
+            var totalItems = recipes.Count();
+            var currentPage = Convert.ToInt32(Request.Params.Get("page"));
+
+            var offset = 0;
+
+            if (!currentPage.Equals(0))
+            {
+                offset = (currentPage - 1) * this._perPage;
+            }
+
+            var paginateRecipes = recipes.OrderBy(rp => rp.RecipeName).Skip(offset).Take(this._perPage);
+            ViewBag.total = totalItems;
+            ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this._perPage);
+            ViewBag.Recipes = paginateRecipes;
+            ViewBag.SearchString = search;
+
+        return View();
         }
 
         //GET
