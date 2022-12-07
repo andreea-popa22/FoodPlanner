@@ -15,6 +15,7 @@ namespace FoodPlaner.Models
         public string RecipeName { get; set; }
         public string UserId { get; set; }
         public string Ingredients { get; set; }
+        public string Description { get; set; }
         public int Time { get; set; }
         public bool Intolerances { get; set; }
         public string Cuisine { get; set; }

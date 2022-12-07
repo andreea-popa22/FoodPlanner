@@ -89,6 +89,7 @@ namespace FoodPlaner.Controllers
 
                     recipe.RecipeName = requestRecipe.RecipeName;
                     recipe.Ingredients = requestRecipe.Ingredients;
+                    recipe.Description = requestRecipe.Description;
                     recipe.Intolerances = requestRecipe.Intolerances;
                     recipe.Time = requestRecipe.Time;
                     recipe.Cuisine = requestRecipe.Cuisine;
