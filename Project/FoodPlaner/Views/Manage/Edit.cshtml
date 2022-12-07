@@ -1,0 +1,51 @@
+﻿@model FoodPlaner.Models.ApplicationUser
+
+
+<h1>Edit Profile</h1>
+<hr />
+
+@using (Html.BeginForm("Edit", "Manage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(false, "", new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+
+    @Html.Label("Name", "Last name")
+    <br />
+    @Html.TextBox("Name", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Surname", "First name")
+    <br />
+    @Html.TextBox("Surname", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Age", "Age")
+    <br />
+    @Html.TextBox("Age", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    @Html.Label("Weight", "Weight")
+    <br />
+    @Html.TextBox("Weight", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+    @Html.Label("BodyIndex", "Body Index")
+    <br />
+    @Html.TextBox("BodyIndex", null, new { @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Name, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+
+    //@Html.ValidationMessageFor(m => m.Photo, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <br />
+    <br />
+
+    <button class="btn btn-lg btn-success" type="submit">Save changes </button>
+}
