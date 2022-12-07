@@ -11,7 +11,16 @@ namespace FoodPlaner.Controllers
     public class RecipeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly UserManager<ApplicationUser> _userManager;
 
+        public RecipeController()
+        {
+
+        }
+        public RecipeController(UserManager<ApplicationUser> userManager)
+        {
+            _userManager = userManager;
+        }
         // GET: Recipes
         public ActionResult Index()
         {
@@ -76,6 +85,8 @@ namespace FoodPlaner.Controllers
                 Recipe recipe = db.Recipes.Find(id);
                 if (TryUpdateModel(recipe))
                 {
+                    recipe.UserId = User.Identity.GetUserId();
+
                     recipe.RecipeName = requestRecipe.RecipeName;
                     recipe.Ingredients = requestRecipe.Ingredients;
                     recipe.Description = requestRecipe.Description;

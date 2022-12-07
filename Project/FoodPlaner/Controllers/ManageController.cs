@@ -13,6 +13,7 @@ namespace FoodPlaner.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -64,17 +65,43 @@ namespace FoodPlaner.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-            };
+            var model = UserManager.FindById(userId);
             return View(model);
         }
 
+        [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            var user = UserManager.FindById(id);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string id, ApplicationUser requestedUser)
+        {
+            try
+            {
+                ApplicationUser user = UserManager.FindById(id);
+                if (TryUpdateModel(user))
+                {
+                    user.Name = requestedUser.Name;
+                    user.Surname = requestedUser.Surname;
+                    user.Age = requestedUser.Age;
+                    user.Weight = requestedUser.Weight;
+                    user.BodyIndex = requestedUser.BodyIndex;
+                    UserManager.Update(user);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(requestedUser);
+                }
+            }
+            catch (Exception e)
+            {
+                return View(requestedUser);
+            }
+        }
         //
         // POST: /Manage/RemoveLogin
         [HttpPost]

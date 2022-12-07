@@ -12,9 +12,9 @@ namespace FoodPlaner.Models
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-        public int Age { get; set; }
-        public int Weight { get; set; }
-        public float BodyIndex { get; set; }
+        public int? Age { get; set; }
+        public int? Weight { get; set; }
+        public float? BodyIndex { get; set; }
 
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Recipe> Recipes { get; set; }
