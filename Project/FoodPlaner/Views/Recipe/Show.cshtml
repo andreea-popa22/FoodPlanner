@@ -2,17 +2,18 @@
 
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title = Recipe details</title>
-        <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title = Recipe details</title>
+    <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
+    <script src="https://kit.fontawesome.com/32f442a5e8.js" crossorigin="anonymous"></script>
+</head>
     <body>
         <br />
         <br />
-        <div class="container">
-            <div class="col-md-6">
+        <div class="container-fluid" style="width: 100%;">
+            <div class="col-md-5">
                 <div class="recipe panel panel-default radius-div">
                     <h2>@Model.RecipeName</h2>
 
@@ -35,6 +36,34 @@
                     <a class="btn btn-danger" href="/Recipe/Delete/@Model.RecipeId" style="margin-bottom: 1rem;">Delete</a>
                 </div>
             </div>
+
+            @if (@Model.Reviews.Count > 0)
+            {
+                <div class="col-md-4 float-right">
+                    <p style="font-size:22px; font-weight:bold; text-align:center">Reviews</p>
+                    <div>
+                        @foreach (var review in Model.Reviews)
+                        {
+                            <div class="recipe panel panel-default radius-div">
+                                <br/>
+                                <div style="display:flex; flex-direction: row">
+                                    <i class='fa fa-user' style='font-size:20px'></i>
+                                    <p style="padding-left:5px"> @review.User.Surname</p>
+                                </div>
+                                <div style="display:flex; flex-direction: row">
+                                    <i class='far fa-calendar-alt' style='font-size:20px'></i>
+                                    <p style="padding-left:5px"> @review.Date.ToShortDateString()</p>
+                                </div>
+                                <div style="display:flex; flex-direction: row">
+                                    <i class='fas fa-star' style='font-size:20px'></i>
+                                    <p style="padding-left:5px"> @review.Score</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <br/>
+                </div>
+            }
         </div>
-    </body>
+</body>
 </html>
