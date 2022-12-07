@@ -1,0 +1,32 @@
+﻿@model FoodPlaner.Models.Review
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - Add a review</title>
+        <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
+    </head>
+    <body>
+        @using (Html.BeginForm("New", "Review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(false, "", new { @class = ".textArea" })
+
+            @Html.Label("Text", "Your feedback")
+            <br />
+            @Html.TextArea("Text", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Text, null, new { @class = ".textArea" })
+            <br />
+            <br />
+
+            @Html.Label("Score", "Score")
+            <br />
+            @Html.ListBoxFor(m => m.Score, null, new { @class = "chosen-select form-control", size = 5, min = 1, max = 5 })
+            @Html.ValidationMessageFor(m => m.Score, null, new { @class = ".textArea" })
+            <br />
+            <br />
+        }
+    </body>
+</html>
+
