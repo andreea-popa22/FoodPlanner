@@ -9,23 +9,31 @@
         <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
     </head>
     <body>
-        @using (Html.BeginForm("New", "Review", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        <br/>
+        <br/>
+        @using (Html.BeginForm("New", "Review", new {recipeId = ViewBag.recipeId},FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
-            @Html.ValidationSummary(false, "", new { @class = ".textArea" })
 
-            @Html.Label("Text", "Your feedback")
+            @Html.Label("Text", "Your feedback:")
             <br />
-            @Html.TextArea("Text", null, new { @class = "form-control" })
+            @Html.TextArea("Text", null, new { @class = "form-control", style = "min-height: 150px;" })
             @Html.ValidationMessageFor(m => m.Text, null, new { @class = ".textArea" })
             <br />
             <br />
-
             @Html.Label("Score", "Score")
             <br />
-            @Html.ListBoxFor(m => m.Score, null, new { @class = "chosen-select form-control", size = 5, min = 1, max = 5 })
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            items.Add(new SelectListItem { Text = "1", Value = "1" });
+            items.Add(new SelectListItem { Text = "2", Value = "2" });
+            items.Add(new SelectListItem { Text = "3", Value = "3" });
+            items.Add(new SelectListItem { Text = "4", Value = "4" });
+            items.Add(new SelectListItem { Text = "5", Value = "5" });
+            @Html.DropDownListFor(m => m.Score, items);
             @Html.ValidationMessageFor(m => m.Score, null, new { @class = ".textArea" })
             <br />
             <br />
+            <button class="btn btn-success" type="submit">Add review</button>
         }
     </body>
 </html>
