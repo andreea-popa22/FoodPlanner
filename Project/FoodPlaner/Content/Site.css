@@ -38,3 +38,9 @@ div.recipe > p{
     font: Sans-serif;
     font-size: 17px;
 }
+
+.floatRight {
+    display: absolute;
+    top: 0;
+    right: 0
+}
