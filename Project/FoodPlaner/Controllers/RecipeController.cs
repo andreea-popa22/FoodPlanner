@@ -23,8 +23,10 @@ namespace FoodPlaner.Controllers
             _userManager = userManager;
         }
         // GET: Recipes
-        public ActionResult Index(string search)
+        public ActionResult Index(string search, string sorted, string ddFilterOption)
         {
+            ViewBag.sorted = sorted;
+            ViewBag.ddlOption = ddFilterOption;
             var recipes = db.Recipes.ToList();
             if (Request.Params.Get("search") != null)
             {
@@ -33,23 +35,61 @@ namespace FoodPlaner.Controllers
                            .ToList();
             }
 
-            var totalItems = recipes.Count();
+
             var currentPage = Convert.ToInt32(Request.Params.Get("page"));
 
             var offset = 0;
 
+            switch (ddFilterOption)
+            {
+                case "1":
+                    recipes = recipes.Where(rp => rp.Time >= 15 && rp.Time < 30).ToList();
+                    break;
+                case "2":
+                    recipes = recipes.Where(rp => rp.Time >= 30 && rp.Time < 60).ToList();
+                    break;
+                case "3":
+                    recipes = recipes.Where(rp => rp.Time >= 60 && rp.Time < 90).ToList();
+                    break;
+                case "4":
+                    recipes = recipes.Where(rp => rp.Time > 90).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            var totalItems = recipes.Count();
             if (!currentPage.Equals(0))
             {
                 offset = (currentPage - 1) * this._perPage;
             }
 
-            var paginateRecipes = recipes.OrderBy(rp => rp.RecipeName).Skip(offset).Take(this._perPage);
+
+            var paginateRecipes = sorted != "sorted" ? recipes.OrderBy(rp => rp.RecipeName)
+                                  .Skip(offset)
+                                  .Take(this._perPage)
+                                  : recipes.OrderBy(rp => rp.Time)
+                                  .Skip(offset)
+                                  .Take(this._perPage);
             ViewBag.total = totalItems;
             ViewBag.lastPage = Math.Ceiling((float)totalItems / (float)this._perPage);
             ViewBag.Recipes = paginateRecipes;
             ViewBag.SearchString = search;
 
         return View();
+        }
+
+        public ActionResult SortByTime(string search)
+        {
+            if (TempData["sorted"] != "sorted")
+            {
+                TempData["sorted"] = "sorted";
+            }
+            else
+            {
+                TempData["sorted"] = "";
+            }
+            return RedirectToAction("Index");
         }
 
         //GET
@@ -92,6 +132,12 @@ namespace FoodPlaner.Controllers
             ApplicationUser user = db.Users.Find(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
             return View(recipe);
+        }
+
+        [HttpPost]
+        public ActionResult Chose()
+        {
+            return RedirectToAction("Index");
         }
 
         [HttpGet]

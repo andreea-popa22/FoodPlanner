@@ -7,6 +7,16 @@
     <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
 </head>
 <body>
+    <script>
+        window.onload = function() {
+
+            var ddlOption = @ViewBag.ddlOption;
+            if (ddlOption != null) {
+                ddlOption = parseInt(ddlOption)
+                document.getElementById("ddlFilter").selectedIndex = ddlOption;
+            }
+        }
+    </script>
     <div class="container">
         <br />
         <div class="row justify-content-center">
@@ -29,6 +39,35 @@
                                         type="submit">
                                     Search
                                 </button>
+                                @if (ViewBag.sorted == null || ViewBag.sorted == "")
+                                {
+                            <a class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?sorted=sorted">Sort</a>
+                                }
+                                else
+                                {
+                            <a class="btn btn-primary btn-lg" style="position:absolute; top:0%; left:50%; font-size:14px; padding:0.9%" href="/Recipe/Index?sorted=">Unsort</a>
+                                }
+
+
+                                @using (Html.BeginForm("Index", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                {
+                                    <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" >
+                                        <option value=0>None</option>
+                                        <option value=1>&lt;30 min</option>
+                                        <option value=2>30-60 min</option>
+                                        <option value=3>60-90 min</option>
+                                        <option value=4>&gt;90 min</option>
+                                    </select>
+                                    @*@Html.DropDownList("Chose", new List<SelectListItem>
+                                    {
+                                       new SelectListItem{ Text="None", Value = "0" },
+                                       new SelectListItem{ Text="<30 min", Value = "1" },
+                                       new SelectListItem{ Text="30-60 min", Value = "2" },
+                                       new SelectListItem{ Text="60-90 min", Value = "3" },
+                                       new SelectListItem{ Text=">90 min", Value = "4" },
+
+                                    })*@
+                                }
                                 <a class="btn btn-primary" style="position:absolute; margin-left: 80%; top:0%" href="/Recipe/New">
                                     Add new recipe
                                 </a>
