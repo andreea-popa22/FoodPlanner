@@ -36,9 +36,9 @@ namespace FoodPlaner.Controllers
             ViewBag.ddlOption = ddFilterOption;
             var recipes = from r in recipeRepository.GetRecipes()
                           select r;
-            if (Request.Params.Get("search") != null)
+            if (search != null)
             {
-                search = Request.Params.Get("search").Trim();
+                search = search.Trim();
                 recipes = from r in recipeRepository.GetRecipes()
                           where r.RecipeName.Contains(search)
                           select r;
