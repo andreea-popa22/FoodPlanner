@@ -1,4 +1,5 @@
 ﻿using FoodPlaner.Models;
+using FoodPlaner.Repositories;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,18 @@ namespace FoodPlaner.Controllers
     public class RecipeController : Controller
     {
         private int _perPage = 3;
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db = new ApplicationDbContext();
         private readonly UserManager<ApplicationUser> _userManager;
+        private IRecipeRepository recipeRepository;
+
 
         public RecipeController()
         {
-
+            this.recipeRepository = new RecipeRepository(new ApplicationDbContext());
+        }
+        public RecipeController(IRecipeRepository recipeRepository)
+        {
+            this.recipeRepository = recipeRepository;
         }
         public RecipeController(UserManager<ApplicationUser> userManager)
         {
@@ -27,12 +34,16 @@ namespace FoodPlaner.Controllers
         {
             ViewBag.sorted = sorted;
             ViewBag.ddlOption = ddFilterOption;
-            var recipes = db.Recipes.ToList();
+            var recipes = from r in recipeRepository.GetRecipes()
+                          select r;
             if (Request.Params.Get("search") != null)
             {
                 search = Request.Params.Get("search").Trim();
-                recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
-                           .ToList();
+                recipes = from r in recipeRepository.GetRecipes()
+                          where r.RecipeName.Contains(search)
+                          select r;
+                //recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
+                //           .ToList();
             }
 
 
@@ -109,8 +120,8 @@ namespace FoodPlaner.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Recipes.Add(recipe);
-                    db.SaveChanges();
+                    recipeRepository.InsertRecipe(recipe);
+                    recipeRepository.Save();
                     return RedirectToAction("Index");
                 }
                 else
@@ -128,8 +139,8 @@ namespace FoodPlaner.Controllers
         // GET: Recipe
         public ActionResult Show(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
-            ApplicationUser user = db.Users.Find(recipe.UserId);
+            Recipe recipe = recipeRepository.GetRecipeByID(id);
+            ApplicationUser user = recipeRepository.GetUserByRecipeID(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
             return View(recipe);
         }
@@ -143,7 +154,7 @@ namespace FoodPlaner.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
+            Recipe recipe = recipeRepository.GetRecipeByID(id);
 
             return View(recipe);
         }
@@ -153,7 +164,7 @@ namespace FoodPlaner.Controllers
         {
             try
             {
-                Recipe recipe = db.Recipes.Find(id);
+                Recipe recipe = recipeRepository.GetRecipeByID(id);
                 if (TryUpdateModel(recipe))
                 {
                     recipe.UserId = User.Identity.GetUserId();
@@ -164,7 +175,8 @@ namespace FoodPlaner.Controllers
                     recipe.Intolerances = requestRecipe.Intolerances;
                     recipe.Time = requestRecipe.Time;
                     recipe.Cuisine = requestRecipe.Cuisine;
-                    db.SaveChanges();
+                    recipeRepository.UpdateRecipe(recipe);
+                    recipeRepository.Save();
                     return RedirectToAction("Index");
                 }
                 else
@@ -181,10 +193,15 @@ namespace FoodPlaner.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
-            db.Recipes.Remove(recipe);
-            db.SaveChanges();
+            Recipe recipe = recipeRepository.GetRecipeByID(id);
+            recipeRepository.DeleteRecipe(id);
+            recipeRepository.Save();
             return Redirect("/Recipe/Index");
+        }
+        protected override void Dispose(bool disposing)
+        {
+            recipeRepository.Dispose();
+            base.Dispose(disposing);
         }
     }
 }

@@ -182,6 +182,8 @@
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IRecipeRepository.cs" />
+    <Compile Include="Repositories\RecipeRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
