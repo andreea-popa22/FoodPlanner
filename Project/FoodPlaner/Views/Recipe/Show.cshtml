@@ -38,12 +38,12 @@
                             @Html.HttpMethodOverride(HttpVerbs.Delete)
                             <button class="btn btn-danger" style="margin-left: 10px" type="submit">Delete</button>
                         </form>
-                        <a class="btn btn-default" style="margin-left: 10px"  href="/Review/New" >Add a review</a>
+                        <a class="btn btn-default" style="margin-left: 10px" href="/Review/New">Add a review</a>
                         <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-            @if (@Model.Reviews.Count > 0)
+            @if (@Model.Reviews != null && Model.Reviews.Count > 0)
             {
                 <div class="col-md-4">
                     <p style="font-size:22px; font-weight:bold; text-align:center">Reviews</p>

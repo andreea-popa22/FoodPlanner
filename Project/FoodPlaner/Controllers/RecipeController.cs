@@ -1,10 +1,18 @@
 ﻿using FoodPlaner.Models;
 using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
+using System.Runtime.CompilerServices;
 
 namespace FoodPlaner.Controllers
 {
@@ -23,15 +31,17 @@ namespace FoodPlaner.Controllers
             _userManager = userManager;
         }
         // GET: Recipes
-        public ActionResult Index(string search, string sorted, string ddFilterOption)
+        public async Task<ActionResult> Index(string search, string sorted, string ddFilterOption)
         {
             ViewBag.sorted = sorted;
             ViewBag.ddlOption = ddFilterOption;
             var recipes = db.Recipes.ToList();
+            List<Recipe> APIRecipes = await GetRecipesFromAPI();
+            recipes.AddRange(APIRecipes);
             if (Request.Params.Get("search") != null)
             {
                 search = Request.Params.Get("search").Trim();
-                recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
+                recipes = recipes.Where(rp => rp.RecipeName.Contains(search))
                            .ToList();
             }
 
@@ -126,9 +136,13 @@ namespace FoodPlaner.Controllers
         }
 
         // GET: Recipe
-        public ActionResult Show(int id)
+        public async Task<ActionResult> Show(int id)
         {
             Recipe recipe = db.Recipes.Find(id);
+            if (recipe == null)
+            {
+                recipe = await getRecipeById(id);
+            }
             ApplicationUser user = db.Users.Find(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
             return View(recipe);
@@ -185,6 +199,104 @@ namespace FoodPlaner.Controllers
             db.Recipes.Remove(recipe);
             db.SaveChanges();
             return Redirect("/Recipe/Index");
+        }
+
+        [HttpGet]
+        public async Task<List<Recipe>> GetRecipesFromAPI()
+        {
+            List<Recipe> recipesList = new List<Recipe>();
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?tags=vegetarian%2Cdessert&number=20"),
+                Headers = { { "X-RapidAPI-Key", getAPIKey() },
+                            { "X-RapidAPI-Host", getAPIHost() }}
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var result = response.Content.ReadAsStringAsync().Result;
+                dynamic body = JsonConvert.DeserializeObject<dynamic>(result);
+                foreach (dynamic obj in body.recipes)
+                {
+                    Recipe recipe = parseObjToRecipe(obj);
+                    recipesList.Add(recipe);
+                }
+            }
+            //ViewBag.Recipes = recipesList;
+            return recipesList;
+        }
+
+        public Recipe parseObjToRecipe(dynamic obj)
+        {
+            int id = obj.id;
+            string ingredients = "";
+            foreach (dynamic ing in obj.extendedIngredients)
+            {
+                ingredients += ing.name;
+                ingredients += ",";
+            }
+            ingredients = ingredients.Remove(ingredients.Length - 1);
+            int time = obj.readyInMinutes;
+            string description = obj.instructions;
+            bool intolerances = obj.glutenFree;
+            string name = obj.title;
+            string cuisine = "Universal";
+            if (obj.cuisines.Count > 0)
+            {
+                cuisine = obj.cuisines[0];
+            }
+
+            Recipe recipe = new Recipe(id, name, "default", ingredients, description, time, intolerances, cuisine);
+            return recipe;
+        }
+
+        public async Task<Recipe> getRecipeById(int id)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/" + id + "/information"),
+                Headers =
+                {
+                    { "X-RapidAPI-Key", getAPIKey() },
+                    { "X-RapidAPI-Host", getAPIHost() },
+                },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                dynamic obj = JsonConvert.DeserializeObject<dynamic>(body);
+                Recipe recipe = parseObjToRecipe(obj);
+                return recipe;
+            }
+        }
+
+        public string getAPIKey()
+        {
+            string workingDirectory = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            var path = workingDirectory + @"\sensitive-data.json";
+            using (StreamReader r = new StreamReader(path))
+            {
+                string readText = r.ReadToEnd();
+                dynamic json = JObject.Parse(readText);
+                return json.APIKey;
+            }
+        }
+
+        public string getAPIHost()
+        {
+            string workingDirectory = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            var path = workingDirectory + @"\sensitive-data.json";
+            using (StreamReader r = new StreamReader(path))
+            {
+                string readText = System.IO.File.ReadAllText(path);
+                dynamic json = JObject.Parse(readText);
+                return json.APIHost;
+            }
         }
     }
 }
