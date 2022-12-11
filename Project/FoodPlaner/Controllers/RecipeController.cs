@@ -142,6 +142,7 @@ namespace FoodPlaner.Controllers
             if (recipe == null)
             {
                 recipe = await getRecipeById(id);
+                recipe.Reviews = db.Reviews.Where(r => r.RecipeId == id).ToList();
             }
             ApplicationUser user = db.Users.Find(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
