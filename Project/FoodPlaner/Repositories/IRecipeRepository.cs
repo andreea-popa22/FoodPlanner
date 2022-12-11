@@ -12,7 +12,7 @@ namespace FoodPlaner.Repositories
         Recipe GetRecipeByID(int recipeId);
         ApplicationUser GetUserByRecipeID(string userId);
         void InsertRecipe(Recipe recipe);
-        void DeleteRecipe(int recipe);
+        void DeleteRecipe(int recipeId);
         void UpdateRecipe(Recipe recipe);
         void Save();
     }

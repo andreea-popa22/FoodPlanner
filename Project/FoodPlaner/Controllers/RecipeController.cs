@@ -25,10 +25,6 @@ namespace FoodPlaner.Controllers
         {
             this.recipeRepository = recipeRepository;
         }
-        public RecipeController(UserManager<ApplicationUser> userManager)
-        {
-            _userManager = userManager;
-        }
         // GET: Recipes
         public ActionResult Index(string search, string sorted, string ddFilterOption)
         {

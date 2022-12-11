@@ -1,4 +1,5 @@
 ﻿using FoodPlaner.Models;
+using FoodPlaner.Repositories;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,17 @@ namespace FoodPlaner.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         private readonly UserManager<ApplicationUser> _userManager;
+        private IReviewRepository reviewRepository;
 
         public ReviewController()
         {
-
+            this.reviewRepository = new ReviewRepository(new ApplicationDbContext());
         }
-        public ReviewController(UserManager<ApplicationUser> userManager)
+        public ReviewController(IReviewRepository reviewRepository)
         {
-            _userManager = userManager;
+            this.reviewRepository = reviewRepository;
         }
+
 
         //GET
         [HttpGet]
@@ -43,8 +46,8 @@ namespace FoodPlaner.Controllers
                     review.RecipeId = recipeId;
                     review.UserId = User.Identity.GetUserId();
                     review.Date = DateTime.Now;
-                    db.Reviews.Add(review);
-                    db.SaveChanges();
+                    reviewRepository.InsertReview(review);
+                    reviewRepository.Save();
                     return Redirect("/Recipe/Show/" + recipeId);
                 }
                 else
@@ -62,8 +65,8 @@ namespace FoodPlaner.Controllers
         // GET: Recipe
         public ActionResult Show(int id)
         {
-            Review review = db.Reviews.Find(id);
-            ApplicationUser user = db.Users.Find(review.UserId);
+            Review review = reviewRepository.GetReviewByID(id);
+            ApplicationUser user = reviewRepository.GetUserByReviewID(review.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
             return View(review);
         }
@@ -71,11 +74,16 @@ namespace FoodPlaner.Controllers
         [HttpDelete]
         public ActionResult Delete(int id)
         {
-            Review review = db.Reviews.Find(id);
-            Recipe recipe = db.Recipes.Find(review.RecipeId);
-            db.Reviews.Remove(review);
-            db.SaveChanges();
+            Review review = reviewRepository.GetReviewByID(id);
+            Recipe recipe = reviewRepository.GetRecipeByReviewID(review.RecipeId);
+            reviewRepository.DeleteReview(id);
+            reviewRepository.Save();
             return Redirect("/Recipe/Show/" + recipe.RecipeId);
+        }
+        protected override void Dispose(bool disposing)
+        {
+            reviewRepository.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
