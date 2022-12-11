@@ -8,12 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace FoodPlaner.Controllers
 {
@@ -47,8 +43,9 @@ namespace FoodPlaner.Controllers
             if (search != null)
             {
                 search = search.Trim();
+                search = search.ToLower();
                 recipes = from r in recipeRepository.GetRecipes()
-                          where r.RecipeName.Contains(search)
+                          where r.RecipeName.ToLower().Contains(search)
                           select r;
                 //recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
                 //           .ToList();
@@ -62,7 +59,7 @@ namespace FoodPlaner.Controllers
             switch (ddFilterOption)
             {
                 case "1":
-                    recipes = recipes.Where(rp => rp.Time >= 15 && rp.Time < 30).ToList();
+                    recipes = recipes.Where(rp => rp.Time < 30).ToList();
                     break;
                 case "2":
                     recipes = recipes.Where(rp => rp.Time >= 30 && rp.Time < 60).ToList();
@@ -84,10 +81,10 @@ namespace FoodPlaner.Controllers
             }
 
 
-            var paginateRecipes = sorted != "sorted" ? recipes.OrderBy(rp => rp.RecipeName)
+            var paginateRecipes = sorted != "sorted" ? recipes.OrderByDescending(rp => rp.RecipeId)
                                   .Skip(offset)
                                   .Take(this._perPage)
-                                  : recipes.OrderBy(rp => rp.Time)
+                                  : recipes.OrderBy(rp => rp.RecipeName)
                                   .Skip(offset)
                                   .Take(this._perPage);
             ViewBag.total = totalItems;
