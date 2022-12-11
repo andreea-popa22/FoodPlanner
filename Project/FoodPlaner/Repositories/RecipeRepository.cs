@@ -25,6 +25,11 @@ namespace FoodPlaner.Repositories
             return context.Users.Find(id);
         }
 
+        public List<Review> GetRecipeReviewsByID(int recipeId)
+        {
+            return context.Reviews.Where(r => r.RecipeId == recipeId).ToList();
+        }
+
         public Recipe GetRecipeByID(int id)
         {
             return context.Recipes.Find(id);

@@ -22,5 +22,19 @@ namespace FoodPlaner.Models
 
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+
+        public Recipe() { }
+
+        public Recipe(int id, string recipeName, string userId, string ingredients, string description, int time, bool intolerances, string cuisine)
+        {
+            RecipeId = id;
+            RecipeName = recipeName;
+            UserId = userId;
+            Ingredients = ingredients;
+            Description = description;
+            Time = time;
+            Intolerances = intolerances;
+            Cuisine = cuisine;
+        }
     }
 }

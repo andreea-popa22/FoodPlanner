@@ -11,6 +11,7 @@ namespace FoodPlaner.Repositories
         IEnumerable<Recipe> GetRecipes();
         Recipe GetRecipeByID(int recipeId);
         ApplicationUser GetUserByRecipeID(string userId);
+        List<Review> GetRecipeReviewsByID(int recipeId);
         void InsertRecipe(Recipe recipe);
         void DeleteRecipe(int recipeId);
         void UpdateRecipe(Recipe recipe);
