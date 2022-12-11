@@ -36,8 +36,8 @@ namespace FoodPlaner.Controllers
             ViewBag.sorted = sorted;
             ViewBag.ddlOption = ddFilterOption;
             var recipes = db.Recipes.ToList();
-            List<Recipe> APIRecipes = await GetRecipesFromAPI();
-            recipes.AddRange(APIRecipes);
+            //List<Recipe> APIRecipes = await GetRecipesFromAPI();
+            //recipes.AddRange(APIRecipes);
             if (Request.Params.Get("search") != null)
             {
                 search = Request.Params.Get("search").Trim();
@@ -146,6 +146,7 @@ namespace FoodPlaner.Controllers
             }
             ApplicationUser user = db.Users.Find(recipe.UserId);
             ViewBag.userName = user.Name + " " + user.Surname;
+            ViewBag.loggedUserId = User.Identity.GetUserId();
             return View(recipe);
         }
 
@@ -172,7 +173,6 @@ namespace FoodPlaner.Controllers
                 if (TryUpdateModel(recipe))
                 {
                     recipe.UserId = User.Identity.GetUserId();
-
                     recipe.RecipeName = requestRecipe.RecipeName;
                     recipe.Ingredients = requestRecipe.Ingredients;
                     recipe.Description = requestRecipe.Description;
