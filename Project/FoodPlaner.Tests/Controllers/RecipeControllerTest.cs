@@ -1,5 +1,6 @@
 ﻿using FoodPlaner.Controllers;
 using FoodPlaner.Models;
+using FoodPlaner.Repositories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace FoodPlaner.Tests.Controllers
     {
         // for context
         private RecipeController recipeController;
-        private Mock<RecipeRepository> recipeRepository;
+        private Mock<IRecipeRepository> recipeRepository;
         private Mock<HttpRequestBase> request;
 
         private IEnumerable<Recipe> recipes;
@@ -50,7 +51,7 @@ namespace FoodPlaner.Tests.Controllers
             controllerContext.Setup(c => c.HttpContext).Returns(httpContext.Object);
 
             // mock recipeController
-            recipeRepository = new Mock<RecipeRepository>();
+            recipeRepository = new Mock<IRecipeRepository>();
             recipeRepository.Setup(m => m.GetRecipes()).Returns(recipes);
             recipeController = new RecipeController(recipeRepository.Object);
             recipeController.ControllerContext = controllerContext.Object;
@@ -104,7 +105,7 @@ namespace FoodPlaner.Tests.Controllers
         {
             int recipesToReturn = recipes.Count();
             string searchText = "";
-            var searcedRecipes = recipeController.getFilteredRecipes(search, recipes);
+            var searcedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
 
             Assert.AreEqual(searcedRecipes.Count(), recipesToReturn);
         }
