@@ -33,11 +33,13 @@
 
                     <div class="panel">
                         <a class="btn btn-primary pull-left" href="/Recipe/Index" style="margin-bottom: 1rem;">Back</a>
-                        <a class="btn btn-warning pull-left" href="/Recipe/Edit/@Model.RecipeId" style="margin-bottom: 1rem; margin-left:10px">Edit</a>
-                        <form class="pull-left" method="post" action="/Recipe/Delete/@Model.RecipeId">
-                            @Html.HttpMethodOverride(HttpVerbs.Delete)
-                            <button class="btn btn-danger" style="margin-left: 10px" type="submit">Delete</button>
-                        </form>
+                        @if (ViewBag.loggedUserId == Model.UserId) {
+                            <a class="btn btn-warning pull-left" href="/Recipe/Edit/@Model.RecipeId" style="margin-bottom: 1rem; margin-left:10px">Edit</a>
+                            <form class="pull-left" method="post" action="/Recipe/Delete/@Model.RecipeId">
+                                @Html.HttpMethodOverride(HttpVerbs.Delete)
+                                <button class="btn btn-danger" style="margin-left: 10px" type="submit">Delete</button>
+                            </form>
+                        }
                         <a class="btn btn-default" style="margin-left: 10px" href="/Review/New">Add a review</a>
                         <div class="clearfix"></div>
                     </div>
