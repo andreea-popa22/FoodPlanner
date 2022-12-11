@@ -30,9 +30,13 @@ namespace FoodPlaner.Controllers
             this.recipeRepository = recipeRepository;
         }
 
-        public IEnumerable<Recipe> getFilteredRecipes(string search, IEnumerable<Recipe> recipes)
+        public IEnumerable<Recipe> getFilteredRecipes(string searchText, IEnumerable<Recipe> recipes)
         {
-            return recipes;
+            if(searchText == null)
+            {
+                return recipes;
+            }
+            return recipes.Where(r => r.RecipeName.Contains(searchText));
         }
 
         // GET: Recipes
@@ -52,13 +56,36 @@ namespace FoodPlaner.Controllers
         [HttpPost]
         public ActionResult New(Recipe recipe)
         {
-            return View();
+            recipe.UserId = User.Identity.GetUserId();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    recipeRepository.InsertRecipe(recipe);
+                    recipeRepository.Save();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(recipe);
+                }
+
+            }
+            catch (Exception e)
+            {
+                return View(recipe);
+            }
         }
 
         // GET: Recipe
         public async Task<ActionResult> Show(int id)
         {
-            return View();
+            Recipe recipe = recipeRepository.GetRecipeByID(id);
+            ApplicationUser user = recipeRepository.GetUserByRecipeID(recipe.UserId);
+            ViewBag.userName = user.Name + " " + user.Surname;
+            ViewBag.loggedUserId = User.Identity.GetUserId();
+            return View(recipe);
         }
 
         [HttpPost]
