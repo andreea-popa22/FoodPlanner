@@ -80,7 +80,7 @@ namespace FoodPlaner.Tests.Controllers
         {
             var user = new ApplicationUser { Name = defaultUserName, Surname = defaultUserSurName };
             recipeRepository.Setup(m => m.GetUserByReviewID(defaultUserId)).Returns(user);
-            
+
             ActionResult result = recipeController.Show(defaultReviewId) as ActionResult;
             Assert.IsNotNull(result);
         }
