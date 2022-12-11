@@ -74,6 +74,13 @@ namespace FoodPlaner.Tests.Controllers
         }
 
         [TestMethod]
+        public void RecipeController_AddRecipeInitial_ReturnsSuccess()
+        {
+            ActionResult result = recipeController.New() as ActionResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
         public void RecipeController_AddRecipe_ReturnsSuccess()
         {
             var recipe = new Recipe { RecipeId = defaultRecipeId, Ingredients = "Vinete, Sos de rosii", Time = 35, Intolerances = false, Cuisine = "Romania", RecipeName = "Tocanita de vinete" };
@@ -82,23 +89,21 @@ namespace FoodPlaner.Tests.Controllers
             Assert.IsNotNull(result);
         }
 
-        //[TestMethod]
-        //public void RecipeController_AddRecipe_ReturnsFailure()
-        //{
-        //    var recipe = new Recipe {};
-        //    RedirectToRouteResult result = recipeController.New(recipe) as RedirectToRouteResult;
-        //    recipeRepository.Setup(m => m.InsertRecipe(recipe)).Raises()
-
-        //    Assert.IsNull(result);
-        //}
+        [TestMethod]
+        public void RecipeController_AddRecipe_FailsModelState()
+        {
+            recipeController.ModelState.AddModelError("key", "error message");
+            ActionResult result = recipeController.New(recipes.ElementAt(0)) as ActionResult;
+            Assert.IsNotNull(result);
+        }
 
         [TestMethod]
         public void RecipeController_SearchRecipesByNull_ReturnsAll()
         {
             string searchText = null;
-            var searcedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
+            var searchedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
 
-            Assert.AreEqual(searcedRecipes.Count(), recipes.Count());
+            Assert.AreEqual(searchedRecipes.Count(), recipes.Count());
         }
 
         [TestMethod]
@@ -106,9 +111,9 @@ namespace FoodPlaner.Tests.Controllers
         {
             int recipesToReturn = 0;
             string searchText = "nada";
-            var searcedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
+            var searchedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
 
-            Assert.AreEqual(searcedRecipes.Count(), recipesToReturn);
+            Assert.AreEqual(searchedRecipes.Count(), recipesToReturn);
         }
 
         [TestMethod]
@@ -116,9 +121,9 @@ namespace FoodPlaner.Tests.Controllers
         {
             int recipesToReturn = 1;
             string searchText = "Gulas";
-            var searcedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
+            var searchedRecipes = recipeController.getFilteredRecipes(searchText, recipes);
 
-            Assert.AreEqual(searcedRecipes.Count(), recipesToReturn);
+            Assert.AreEqual(searchedRecipes.Count(), recipesToReturn);
         }
 
         [TestMethod]
@@ -141,6 +146,76 @@ namespace FoodPlaner.Tests.Controllers
 
             Task<ActionResult> result = recipeController.Show(defaultRecipeId) as Task<ActionResult>;
 
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void RecipeController_EditRecipeInitial_ReturnsSuccess()
+        {
+            Recipe recipeToBeEdited = recipes.ElementAt(0);
+            
+            recipeRepository.Setup(m => m.GetRecipeByID(defaultRecipeId)).Returns(recipeToBeEdited);
+
+            ActionResult result = recipeController.Edit(defaultRecipeId) as ActionResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void RecipeController_EditRecipe_ReturnsSuccess()
+        {
+            Recipe recipeToBeEdited = recipes.ElementAt(0);
+            recipeRepository.Setup(m => m.GetRecipeByID(defaultRecipeId)).Returns(recipeToBeEdited);
+
+            Recipe requestRecipe = recipes.ElementAt(1);
+            var recipeForm = new FormCollection
+            {
+                {"RecipeName", requestRecipe.RecipeName},
+                {"Description", requestRecipe.Description},
+                {"Time", requestRecipe.Time.ToString()},
+                {"Cuisine", requestRecipe.Cuisine},
+                {"Igredients", requestRecipe.Ingredients},
+                {"Intolerances", requestRecipe.Intolerances.ToString()}
+            };
+
+            recipeController.ValueProvider = recipeForm.ToValueProvider();
+
+            RedirectToRouteResult result = recipeController.Edit(defaultRecipeId, requestRecipe) as RedirectToRouteResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void RecipeController_EditRecipe_ReturnsFailure()
+        {
+            Recipe recipeToBeEdited = recipes.ElementAt(0);
+            recipeRepository.Setup(m => m.GetRecipeByID(defaultRecipeId)).Returns(recipeToBeEdited);
+
+            Recipe requestRecipe = recipes.ElementAt(1);
+            var recipeForm = new FormCollection
+            {
+                {"Time", "fail"},
+                {"Intolerances", "fail"}
+            };
+
+            recipeController.ValueProvider = recipeForm.ToValueProvider();
+
+            ActionResult result = recipeController.Edit(defaultRecipeId, requestRecipe) as ActionResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void RecipeController_RedirectToIndex_ReturnsSuccess()
+        {
+            RedirectToRouteResult result = recipeController.Chose() as RedirectToRouteResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void RecipeController_DeleteRecipe_ReturnsSuccess()
+        {
+            RedirectResult result = recipeController.Delete(defaultRecipeId) as RedirectResult;
             Assert.IsNotNull(result);
         }
 

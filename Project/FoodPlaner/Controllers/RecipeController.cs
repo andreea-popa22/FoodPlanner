@@ -95,23 +95,49 @@ namespace FoodPlaner.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int recipeId)
         {
-            Recipe recipe = recipeRepository.GetRecipeByID(id);
+            Recipe recipe = recipeRepository.GetRecipeByID(recipeId);
 
             return View(recipe);
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Recipe requestRecipe)
+        public ActionResult Edit(int recipeId, Recipe requestRecipe)
         {
-            return View();
+            try
+            {
+                Recipe recipeToBeEdited = recipeRepository.GetRecipeByID(recipeId);
+                if (TryUpdateModel(recipeToBeEdited))
+                {
+                    recipeToBeEdited.UserId = User.Identity.GetUserId();
+                    recipeToBeEdited.RecipeName = requestRecipe.RecipeName;
+                    recipeToBeEdited.Description = requestRecipe.Description;
+                    recipeToBeEdited.Time = requestRecipe.Time;
+                    recipeToBeEdited.Cuisine = requestRecipe.Cuisine;
+                    recipeToBeEdited.Ingredients = requestRecipe.Ingredients;
+                    recipeToBeEdited.Intolerances = requestRecipe.Intolerances;
+                    recipeRepository.UpdateRecipe(recipeToBeEdited);
+                    recipeRepository.Save();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(requestRecipe);
+                }
+            }
+            catch (Exception e)
+            {
+                return View(requestRecipe);
+            }
         }
 
         [HttpDelete]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int recipeId)
         {
-            return View();
+            recipeRepository.DeleteRecipe(recipeId);
+            recipeRepository.Save();
+            return Redirect("/Recipe/Index");
         }
         protected override void Dispose(bool disposing)
         {

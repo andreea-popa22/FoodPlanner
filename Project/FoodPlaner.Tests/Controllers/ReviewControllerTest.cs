@@ -21,7 +21,7 @@ namespace FoodPlaner.Tests.Controllers
     public class ReviewControllerTest
     {
         private ReviewController recipeController;
-        private Mock<IReviewRepository> recipeRepository;
+        private Mock<IReviewRepository> reviewRepository;
         private Mock<HttpRequestBase> request;
 
         private const string defaultUserName = "User";
@@ -60,12 +60,19 @@ namespace FoodPlaner.Tests.Controllers
             controllerContext.Setup(c => c.HttpContext).Returns(httpContext.Object);
 
             // Mock Recipe Controller
-            recipeRepository = new Mock<IReviewRepository>();
-            recipeRepository.Setup(m => m.GetReviewByID(defaultReviewId)).Returns(reviews.ElementAt(0));
-            recipeController = new ReviewController(recipeRepository.Object)
+            reviewRepository = new Mock<IReviewRepository>();
+            reviewRepository.Setup(m => m.GetReviewByID(defaultReviewId)).Returns(reviews.ElementAt(0));
+            recipeController = new ReviewController(reviewRepository.Object)
             {
                 ControllerContext = controllerContext.Object
             };
+        }
+
+        [TestMethod]
+        public void ReviewController_AddReviewInitial_ReturnsSuccess()
+        {
+            ActionResult result = recipeController.New() as ActionResult;
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -76,10 +83,18 @@ namespace FoodPlaner.Tests.Controllers
         }
 
         [TestMethod]
+        public void ReviewController_AddReview_FailsModelState()
+        {
+            recipeController.ModelState.AddModelError("key", "error message");
+            RedirectResult result = recipeController.New(reviews.ElementAt(0), defaultRecipeId) as RedirectResult;
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
         public void ReviewController_ShowReview_ReturnsSuccess()
         {
             var user = new ApplicationUser { Name = defaultUserName, Surname = defaultUserSurName };
-            recipeRepository.Setup(m => m.GetUserByReviewID(defaultUserId)).Returns(user);
+            reviewRepository.Setup(m => m.GetUserByReviewID(defaultUserId)).Returns(user);
 
             ActionResult result = recipeController.Show(defaultReviewId) as ActionResult;
             Assert.IsNotNull(result);
@@ -88,7 +103,7 @@ namespace FoodPlaner.Tests.Controllers
         [TestMethod]
         public void ReviewController_Delete_ReturnsSuccess()
         {
-            recipeRepository.Setup(m => m.GetRecipeByReviewID(defaultRecipeId)).Returns(defaultRecipe);
+            reviewRepository.Setup(m => m.GetRecipeByReviewID(defaultRecipeId)).Returns(defaultRecipe);
             RedirectResult result = recipeController.Delete(defaultReviewId) as RedirectResult;
             Assert.IsNotNull(result);
         }
