@@ -29,6 +29,21 @@ namespace FoodPlaner.Controllers
         {
             this.recipeRepository = recipeRepository;
         }
+
+        public IEnumerable<Recipe> getFilteredRecipes(string search, IEnumerable<Recipe> recipes)
+        {
+            if (search == null)
+            {
+                return recipes;
+            }
+            search = search.Trim();
+            search = search.ToLower();
+            var filteredRecipes = from r in recipeRepository.GetRecipes()
+                      where r.RecipeName.ToLower().Contains(search)
+                      select r;
+            return filteredRecipes;
+        }
+
         // GET: Recipes
         public async Task<ActionResult> Index(string search, string sorted, string ddFilterOption)
         {
@@ -39,18 +54,8 @@ namespace FoodPlaner.Controllers
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
             //List<Recipe> APIRecipes = await GetRecipesFromAPI();
             //recipes.AddRange(APIRecipes);
-            
-            if (search != null)
-            {
-                search = search.Trim();
-                search = search.ToLower();
-                recipes = from r in recipeRepository.GetRecipes()
-                          where r.RecipeName.ToLower().Contains(search)
-                          select r;
-                //recipes = db.Recipes.Where(rp => rp.RecipeName.Contains(search))
-                //           .ToList();
-            }
 
+            recipes = getFilteredRecipes(search, recipes);
 
             var currentPage = Convert.ToInt32(Request.Params.Get("page"));
 
@@ -92,7 +97,7 @@ namespace FoodPlaner.Controllers
             ViewBag.Recipes = paginateRecipes;
             ViewBag.SearchString = search;
 
-        return View();
+            return View();
         }
 
         public ActionResult SortByTime(string search)
@@ -111,7 +116,7 @@ namespace FoodPlaner.Controllers
         //GET
         [HttpGet]
         public ActionResult New()
-        { 
+        {
             return View();
         }
 
@@ -135,7 +140,7 @@ namespace FoodPlaner.Controllers
                 }
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return View(recipe);
             }
@@ -194,7 +199,7 @@ namespace FoodPlaner.Controllers
                     return View(requestRecipe);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return View(requestRecipe);
             }
