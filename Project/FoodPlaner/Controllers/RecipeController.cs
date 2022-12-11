@@ -8,12 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
-using System.Web;
-using System.Web.Hosting;
 using System.Web.Mvc;
-using System.Runtime.CompilerServices;
 
 namespace FoodPlaner.Controllers
 {

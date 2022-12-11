@@ -41,17 +41,17 @@
                                 </button>
                                 @if (ViewBag.sorted == null || ViewBag.sorted == "")
                                 {
-                            <a class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?sorted=sorted">Sort</a>
+                            <a class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption">Sort</a>
                                 }
                                 else
                                 {
-                            <a class="btn btn-primary btn-lg" style="position:absolute; top:0%; left:50%; font-size:14px; padding:0.9%" href="/Recipe/Index?sorted=">Unsort</a>
+                            <a class="btn btn-primary btn-lg" style="position:absolute; top:0%; left:50%; font-size:14px; padding:0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=&ddlFilterOption=@ViewBag.ddlOption">Unsort</a>
                                 }
 
 
                                 @using (Html.BeginForm("Index", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
-                                    <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" >
+                                    <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption" >
                                         <option value=0>None</option>
                                         <option value=1>&lt;30 min</option>
                                         <option value=2>30-60 min</option>
@@ -100,14 +100,14 @@
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString"
+                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 }
                 else
                 {
-                    <a href="/Recipe/Index?page=1" aria-label="Previous">
+                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 }
@@ -117,24 +117,24 @@
                 if (ViewBag.search != "")
                 {
                     <li>
-                        <a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString">@(i)</a>
+                        <a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddFilterOption=@ViewBag.ddlOption">@(i)</a>
                     </li>
                 }
                 else
                 {
-                    <li><a href="/Recipe/Index?page=@i">@(i)</a></li>
+                    <li><a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption">@(i)</a></li>
                 }
             }
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Recipe/Index?page=@(ViewBag.lastPage)&search=@ViewBag.SearchString" arialabel="Next">
+                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption" arialabel="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 }
                 else
                 {
-                    <a href="/Recipe/Index?page=@(ViewBag.lastPage)" arialabel="Next">
+                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption" arialabel="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 }
