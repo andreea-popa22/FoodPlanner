@@ -38,11 +38,11 @@ namespace FoodPlaner.Controllers
         {
             if (search == null)
             {
-                return Enumerable.Empty<Recipe>();
+                return recipes;
             }
 
             search = search.Trim();
-            var filteredRecipes = from r in recipeRepository.GetRecipes()
+            var filteredRecipes = from r in recipes
                                   where r.RecipeName.Contains(search)
                                   select r;
             return filteredRecipes;
