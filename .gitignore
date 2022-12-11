@@ -397,3 +397,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 /Project/FoodPlaner/cstrings.config
+/Project/FoodPlaner/sensitive-data.json
