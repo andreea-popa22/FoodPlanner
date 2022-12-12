@@ -47,7 +47,11 @@ namespace FoodPlaner.Controllers
         // GET: Recipes
         public async Task<ActionResult> Index(string search, string sorted, string ddFilterOption)
         {
-            ViewBag.sorted = sorted;
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/Account/Login");
+            }
+                ViewBag.sorted = sorted;
             ViewBag.ddlOption = ddFilterOption;
             var recipes = from r in recipeRepository.GetRecipes()
                           select r;
