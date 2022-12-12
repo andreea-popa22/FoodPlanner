@@ -24,3 +24,15 @@ The application aims to achieve the following objectives:
 
 ### ◻️ Target group:
 Different users: ordinary people, people who are passionate about cooking, people with various food intolerances.
+
+____
+
+
+
+◻️ **Technical details**
+
+- **Web development stack**: .NET Framework 4.7.1, Identity Framework 2.2.3, Entity Framework 6.1.3, Azure SQL Database, Bootstrap
+- **IDE**: Visual Studio 2022
+- **Database management**: Azure Portal, Azure Data Studio
+- **Unit tests**: UnitTesting (TestTools)
+- **Code coverage**: Fine Code Coverage
