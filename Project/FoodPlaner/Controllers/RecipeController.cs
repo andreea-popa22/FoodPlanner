@@ -45,10 +45,11 @@ namespace FoodPlaner.Controllers
         }
 
         // GET: Recipes
-        public async Task<ActionResult> Index(string search, string sorted, string ddFilterOption)
+        public async Task<ActionResult> Index(string search = "", string sorted = "", string ddFilterOption ="")
         {
+
             ViewBag.sorted = sorted;
-            ViewBag.ddlOption = ddFilterOption;
+            TempData["ddlOption"] = ddFilterOption == "" ? "0" : ddFilterOption;
             var recipes = from r in recipeRepository.GetRecipes()
                           select r;
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
