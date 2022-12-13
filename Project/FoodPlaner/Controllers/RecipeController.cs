@@ -47,8 +47,11 @@ namespace FoodPlaner.Controllers
         // GET: Recipes
         public async Task<ActionResult> Index(string search = "", string sorted = "", string ddFilterOption ="")
         {
-
-            ViewBag.sorted = sorted;
+            if (!User.Identity.IsAuthenticated)
+            {
+                Response.Redirect("/Account/Login");
+            }
+                ViewBag.sorted = sorted;
             TempData["ddlOption"] = ddFilterOption == "" ? "0" : ddFilterOption;
             var recipes = from r in recipeRepository.GetRecipes()
                           select r;
@@ -228,7 +231,7 @@ namespace FoodPlaner.Controllers
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?tags=vegetarian%2Cdessert&number=20"),
+                RequestUri = new Uri("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?&number=20"),
                 Headers = { { "X-RapidAPI-Key", getAPIKey() },
                             { "X-RapidAPI-Host", getAPIHost() }}
             };
@@ -316,6 +319,38 @@ namespace FoodPlaner.Controllers
                 dynamic json = JObject.Parse(readText);
                 return json.APIHost;
             }
+        }
+
+        public async Task<ActionResult> Random()
+        {
+            List<Recipe> APIRecipes = await getRandomRecipes();
+            ViewBag.Recipes = APIRecipes;
+            return View();
+        }
+
+        public async Task<List<Recipe>> getRandomRecipes()
+        {
+            List<Recipe> recipesList = new List<Recipe>();
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/random?&number=3"),
+                Headers = { { "X-RapidAPI-Key", getAPIKey() },
+                            { "X-RapidAPI-Host", getAPIHost() }}
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var result = response.Content.ReadAsStringAsync().Result;
+                dynamic body = JsonConvert.DeserializeObject<dynamic>(result);
+                foreach (dynamic obj in body.recipes)
+                {
+                    Recipe recipe = parseObjToRecipe(obj);
+                    recipesList.Add(recipe);
+                }
+            }
+            return recipesList;
         }
     }
 }
