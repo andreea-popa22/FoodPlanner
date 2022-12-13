@@ -8,13 +8,35 @@
 </head>
 <body>
     <script>
-        window.onload = function() {
+        window.onload = function () {
+            var url = document.URL;
 
-            var ddlOption = @ViewBag.ddlOption;
+            var ddlOption = @TempData["ddlOption"];
+            if (url.includes("ddlFilterOption")) {
+                var startPos = url.lastIndexOf("=") + 1;
+                ddlOption = url.slice(startPos);
+                console.log(ddlOption);
+            }
             if (ddlOption != null) {
                 ddlOption = parseInt(ddlOption)
+                console.log("a");
                 document.getElementById("ddlFilter").selectedIndex = ddlOption;
             }
+        }
+        function test() {
+            var url = document.URL;
+
+            var ddlOption = @TempData["ddlOption"];
+            if (url.includes("ddlFilterOption")) {
+                var startPos = url.lastIndexOf("=") + 1;
+                ddlOption = url.slice(startPos);
+            }
+            if (ddlOption != null) {
+                ddlOption = parseInt(ddlOption)
+                console.log("ba");
+                document.getElementById("ddlFilter").selectedIndex = ddlOption;
+            }
+            return 0;
         }
     </script>
     <div class="container">
@@ -32,7 +54,12 @@
                                 <input class="form-control form-control-lg form-controlborderless" type="text" name="search"
                                        value="@ViewBag.SearchString"
                                        placeholder="Search topics or keywords">
-
+                                <input hidden="hidden" class="form-control form-control-lg form-controlborderless" type="hidden" name="sorted"
+                                       value="@ViewBag.sorted"
+                                       placeholder="Search topics or keywords">
+                                <input hidden="hidden" class="form-control form-control-lg form-controlborderless" type="hidden" name="ddlFilterOption"
+                                       value="@TempData["ddlOption"]"
+                                       placeholder="Search topics or keywords">
                                 <!--end of col-->
 
                                 <button class="btn btn-lg btn-success" style="position:absolute; top:0%; left:40%; font-size:14px; padding:0.9%"
@@ -41,17 +68,18 @@
                                 </button>
                                 @if (ViewBag.sorted == null || ViewBag.sorted == "")
                                 {
-                            <a class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption">Sort</a>
+                                    <a id ="srt" class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Sort</a>
                                 }
                                 else
                                 {
-                            <a class="btn btn-primary btn-lg" style="position:absolute; top:0%; left:50%; font-size:14px; padding:0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=&ddlFilterOption=@ViewBag.ddlOption">Unsort</a>
+                                    <a id ="srt" class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Unsort</a>
                                 }
 
 
                                 @using (Html.BeginForm("Index", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
-                                    <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption" >
+                                    <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@TempData["ddlOption"]">
+                                        
                                         <option value=0>None</option>
                                         <option value=1>&lt;30 min</option>
                                         <option value=2>30-60 min</option>
@@ -59,14 +87,14 @@
                                         <option value=4>&gt;90 min</option>
                                     </select>
                                     @*@Html.DropDownList("Chose", new List<SelectListItem>
-                                    {
-                                       new SelectListItem{ Text="None", Value = "0" },
-                                       new SelectListItem{ Text="<30 min", Value = "1" },
-                                       new SelectListItem{ Text="30-60 min", Value = "2" },
-                                       new SelectListItem{ Text="60-90 min", Value = "3" },
-                                       new SelectListItem{ Text=">90 min", Value = "4" },
+            {
+               new SelectListItem{ Text="None", Value = "0" },
+               new SelectListItem{ Text="<30 min", Value = "1" },
+               new SelectListItem{ Text="30-60 min", Value = "2" },
+               new SelectListItem{ Text="60-90 min", Value = "3" },
+               new SelectListItem{ Text=">90 min", Value = "4" },
 
-                                    })*@
+            })*@
                                 }
                                 <a class="btn btn-primary" style="position:absolute; margin-left: 80%; top:0%" href="/Recipe/New">
                                     Add new recipe
@@ -100,14 +128,14 @@
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption"
+                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@TempData["ddlOption"]"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 }
                 else
                 {
-                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption" aria-label="Previous">
+                    <a href="/Recipe/Index?page=1&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@TempData["ddlOption"]" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 }
@@ -117,24 +145,24 @@
                 if (ViewBag.search != "")
                 {
                     <li>
-                        <a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddFilterOption=@ViewBag.ddlOption">@(i)</a>
+                        <a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddFilterOption=@TempData["ddlOption"]">@(i)</a>
                     </li>
                 }
                 else
                 {
-                    <li><a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@ViewBag.ddlOption">@(i)</a></li>
+                    <li><a href="/Recipe/Index?page=@i&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@TempData["ddlOption"]">@(i)</a></li>
                 }
             }
             <li>
                 @if (ViewBag.search != "")
                 {
-                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption" arialabel="Next">
+                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@TempData["ddlOption"]" arialabel="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 }
                 else
                 {
-                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@ViewBag.ddlOption" arialabel="Next">
+                    <a href="/Recipe/Index?page=@ViewBag.lastPage&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@TempData["ddlOption"]" arialabel="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 }
