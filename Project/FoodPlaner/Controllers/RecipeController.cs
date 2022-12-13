@@ -38,9 +38,7 @@ namespace FoodPlaner.Controllers
             }
             search = search.Trim();
             search = search.ToLower();
-            var filteredRecipes = from r in recipeRepository.GetRecipes()
-                      where r.RecipeName.ToLower().Contains(search)
-                      select r;
+            var filteredRecipes = recipes.Where(r => r.RecipeName.Contains(search));
             return filteredRecipes;
         }
 
@@ -53,11 +51,11 @@ namespace FoodPlaner.Controllers
             }
                 ViewBag.sorted = sorted;
             TempData["ddlOption"] = ddFilterOption == "" ? "0" : ddFilterOption;
-            var recipes = from r in recipeRepository.GetRecipes()
+            var dbRecipes = from r in recipeRepository.GetRecipes()
                           select r;
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
-            //List<Recipe> APIRecipes = await GetRecipesFromAPI();
-            //recipes.AddRange(APIRecipes);
+            List<Recipe> APIRecipes = await GetRecipesFromAPI();
+            var recipes = dbRecipes.Concat((IEnumerable<Recipe>)APIRecipes);
 
             recipes = getFilteredRecipes(search, recipes);
 
