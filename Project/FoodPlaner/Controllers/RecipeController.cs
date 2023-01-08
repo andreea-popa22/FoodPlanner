@@ -16,7 +16,7 @@ namespace FoodPlaner.Controllers
     public class RecipeController : Controller
     {
         private int _perPage = 3;
-        //private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
         private readonly UserManager<ApplicationUser> _userManager;
         private IRecipeRepository recipeRepository;
 
@@ -51,13 +51,21 @@ namespace FoodPlaner.Controllers
             }
                 ViewBag.sorted = sorted;
             TempData["ddlOption"] = ddFilterOption == "" ? "0" : ddFilterOption;
-            var dbRecipes = from r in recipeRepository.GetRecipes()
-                          select r;
+            //var dbRecipes = from r in recipeRepository.GetRecipes()
+            //              select r;
+
+            var dbRecipes = db.Recipes.ToList();
+
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
             List<Recipe> APIRecipes = await GetRecipesFromAPI();
             var recipes = dbRecipes.Concat((IEnumerable<Recipe>)APIRecipes);
 
-            recipes = getFilteredRecipes(search, recipes);
+            if (Request.Params.Get("search") != null)
+            {
+                search = Request.Params.Get("search").Trim();
+                recipes = recipes.Where(rp => rp.RecipeName.ToLower().Contains(search.ToLower()))
+                           .ToList();
+            }
 
             var currentPage = Convert.ToInt32(Request.Params.Get("page"));
 
