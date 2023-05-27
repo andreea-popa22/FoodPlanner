@@ -5,10 +5,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace FoodPlaner.Controllers
@@ -57,8 +59,8 @@ namespace FoodPlaner.Controllers
             var dbRecipes = db.Recipes.ToList();
 
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
-            List<Recipe> APIRecipes = await GetRecipesFromAPI();
-            var recipes = dbRecipes.Concat((IEnumerable<Recipe>)APIRecipes);
+            //List<Recipe> APIRecipes = await GetRecipesFromAPI();
+            //var recipes = dbRecipes.Concat((IEnumerable<Recipe>)APIRecipes);
 
             if (Request.Params.Get("search") != null)
             {
@@ -135,11 +137,21 @@ namespace FoodPlaner.Controllers
         public ActionResult New(Recipe recipe)
         {
             recipe.UserId = User.Identity.GetUserId();
-
+            HttpPostedFileBase photo = Request.Files["recipeImage"];
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (photo != null && photo.ContentLength > 0)
+                    {
+                        byte[] imageData = null;
+                        using (var binaryReader = new BinaryReader(photo.InputStream))
+                        {
+                            imageData = binaryReader.ReadBytes(photo.ContentLength);
+                        }
+
+                        recipe.Photo = imageData;
+                    }
                     recipeRepository.InsertRecipe(recipe);
                     recipeRepository.Save();
                     return RedirectToAction("Index");
@@ -186,13 +198,23 @@ namespace FoodPlaner.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Recipe requestRecipe)
+        public ActionResult Edit(int id, Recipe requestRecipe, HttpPostedFileBase photo)
         {
             try
             {
                 Recipe recipe = recipeRepository.GetRecipeByID(id);
                 if (TryUpdateModel(recipe))
                 {
+                    if (photo != null && photo.ContentLength > 0)
+                    {
+                        byte[] imageData = null;
+                        using (var binaryReader = new BinaryReader(photo.InputStream))
+                        {
+                            imageData = binaryReader.ReadBytes(photo.ContentLength);
+                        }
+
+                        recipe.Photo = imageData;
+                    }
                     recipe.UserId = User.Identity.GetUserId();
                     recipe.RecipeName = requestRecipe.RecipeName;
                     recipe.Ingredients = requestRecipe.Ingredients;
@@ -271,12 +293,13 @@ namespace FoodPlaner.Controllers
             bool intolerances = obj.glutenFree;
             string name = obj.title;
             string cuisine = "Universal";
+            byte[] photo = obj.photo;
             if (obj.cuisines.Count > 0)
             {
                 cuisine = obj.cuisines[0];
             }
 
-            Recipe recipe = new Recipe(id, name, "default", ingredients, description, time, intolerances, cuisine);
+            Recipe recipe = new Recipe(id, name, "default", ingredients, description, time, intolerances, cuisine, photo);
             return recipe;
         }
 
@@ -357,6 +380,19 @@ namespace FoodPlaner.Controllers
                 }
             }
             return recipesList;
+        }
+        [HttpGet]
+        public ActionResult RetrieveImage(int recipeId)
+        {
+            byte[] cover = recipeRepository.GetRecipeByID(recipeId)?.Photo;
+            if (cover != null)
+            {
+                return File(cover, "image/jpg");
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -15,8 +15,8 @@
         <div class="container-fluid" style="width: 100%">
             <div class="col-md-5">
                 <div class="recipe panel panel-default radius-div">
-                    <h2>@Model.RecipeName</h2>
-
+                    <h2>@Model.RecipeName</h2>  
+                    <img src="@Url.Action("RetrieveImage", "Recipe", new {Model.RecipeId })" alt="" height=100 width=200 />
                     <p> Author: @ViewBag.userName </p>
                     <p> Ingredients:</p>
                     <ul style="list-style-type:circle" id="ingredientList">
@@ -33,7 +33,8 @@
 
                     <div class="panel">
                         <a class="btn btn-primary pull-left" href="/Recipe/Index" style="margin-bottom: 1rem;">Back</a>
-                        @if (ViewBag.loggedUserId == Model.UserId) {
+                        @if (ViewBag.loggedUserId == Model.UserId)
+                        {
                             <a class="btn btn-warning pull-left" href="/Recipe/Edit/@Model.RecipeId" style="margin-bottom: 1rem; margin-left:10px">Edit</a>
                             <form class="pull-left" method="post" action="/Recipe/Delete/@Model.RecipeId">
                                 @Html.HttpMethodOverride(HttpVerbs.Delete)

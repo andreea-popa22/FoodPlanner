@@ -17,7 +17,7 @@
 
     @Html.Label("Ingredients", "Ingredients")
     <br />
-    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 100px;"})
+    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 100px;" })
     @Html.ValidationMessageFor(m => m.Ingredients, null, new { @class = ".textArea" })
     <br />
     <br />
@@ -25,7 +25,7 @@
     @Html.Label("Description", "Recipe description")
     <br />
     @Html.TextArea("Description", null, new { @class = "form-control", style = "min-height: 200px;" })
-    @Html.ValidationMessageFor(m => m.Description, null, new { @class=".textArea" })
+    @Html.ValidationMessageFor(m => m.Description, null, new { @class = ".textArea" })
     <br />
     <br />
 
@@ -49,6 +49,13 @@
     @Html.ValidationMessageFor(m => m.Intolerances, null, new { @class = ".textArea" })
     <br />
     <br />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Photo)
+        <input type="file" name="recipeImage" id="recipeImage" />
+        @Html.ValidationMessageFor(model => model.Photo)
+    </div>
+
 
     <button class="btn btn-lg btn-success" style="background-color: #25CCF7;" type="submit">Add recipe</button>
 }

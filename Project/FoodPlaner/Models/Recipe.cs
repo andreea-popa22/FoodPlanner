@@ -19,13 +19,13 @@ namespace FoodPlaner.Models
         public int Time { get; set; }
         public bool Intolerances { get; set; }
         public string Cuisine { get; set; }
-
+        public byte[] Photo { get; set; }
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
 
         public Recipe() { }
 
-        public Recipe(int id, string recipeName, string userId, string ingredients, string description, int time, bool intolerances, string cuisine)
+        public Recipe(int id, string recipeName, string userId, string ingredients, string description, int time, bool intolerances, string cuisine, byte[] photo)
         {
             RecipeId = id;
             RecipeName = recipeName;
@@ -35,6 +35,7 @@ namespace FoodPlaner.Models
             Time = time;
             Intolerances = intolerances;
             Cuisine = cuisine;
+            Photo = photo;
         }
     }
 }
