@@ -7,8 +7,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<h1>Edit recipe</h1>
-<hr />
+<h3 style="text-align: center">Edit recipe</h3>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var elems = document.querySelectorAll('select');
@@ -19,26 +19,26 @@
         $('select').formSelect();
     });
 </script>
-@using (Html.BeginForm("Edit", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data", style = "margin-left: 36%; margin-bottom: 10%;" }))
 {
     @*@Html.ValidationSummary(false, "", new { @class = ".textArea" })*@
 
     <br />
-    <input placeholder="Recipe Name" id="first_name2" name="RecipeName" type="text" class="validate form-control" value="@Model.RecipeName">
+    <input placeholder="Recipe Name" id="first_name2" name="RecipeName" type="text" class="validate form-control" value="@Model.RecipeName" style="width: 100%;">
     @Html.ValidationMessageFor(m => m.RecipeName, null, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Ingredients", "Ingredients")
     <br />
-    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 100px;" })
+    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 50px;" })
     @Html.ValidationMessageFor(m => m.Ingredients, null, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Description", "Recipe description")
     <br />
-    @Html.TextArea("Description", null, new { @class = "form-control", style = "min-height: 200px;" })
+    @Html.TextArea("Description", null, new { @class = "form-control", style = "min-height: 50px;" })
     @Html.ValidationMessageFor(m => m.Description, null, new { @class = ".textArea" })
     <br />
     <br />
@@ -63,7 +63,7 @@
 
     @Html.Label("Time", "Time")
     <br />
-    @Html.TextArea("Time", null, new { @class = "form-control" })
+    @Html.TextArea("Time", null, new { @class = "form-control", style = "height: 35px; min-height: 35px;" })
     @Html.ValidationMessageFor(m => m.Time, null, new { @class = ".textArea" })
     <br />
     <br />
@@ -74,6 +74,6 @@
         @Html.ValidationMessageFor(model => model.Photo)
     </div>
 
-
-    <button class="btn btn-lg btn-success" style="background-color: #25CCF7;" type="submit">Save changes</button>
+    <br />
+    <button class="btn btn-lg btn-success waves-effect waves-light" style="margin-left: 10%" type="submit">Save changes</button>
 }
