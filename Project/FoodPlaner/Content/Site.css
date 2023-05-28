@@ -29,6 +29,7 @@ textarea {
     color: #F8EFBA;
     text-shadow: 2px 2px #ff0000;
     font-style: italic;
+    padding-left: 10px;
 }
 
 .recipe {
