@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -356,8 +357,10 @@ namespace FoodPlaner.Controllers
 
         public async Task<ActionResult> Random()
         {
-            List<Recipe> APIRecipes = await getRandomRecipes();
-            ViewBag.Recipes = APIRecipes;
+            var recipes= recipeRepository.GetRecipes().ToList();
+
+            Random random = new Random();
+            ViewBag.Recipes = recipes.OrderBy(x => random.Next()).Take(3).ToList();
             return View();
         }
 
