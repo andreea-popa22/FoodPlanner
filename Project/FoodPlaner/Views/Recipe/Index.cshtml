@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Recipes</title>
     <link rel="stylesheet" type="text/css" media="all" href="~/Content/Site.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="~/Content/Materialize.css" />
 </head>
 <body>
     <script>
@@ -113,20 +114,33 @@
     </div>
 
     <div>
-
+        <br />
+        <br />
+        <br />
     </div>
 
     @foreach (FoodPlaner.Models.Recipe item in ViewBag.Recipes)
-    {
-        <h2>@item.RecipeName</h2>
-        <p>Ingredients: @item.Ingredients</p>
-        <p>Time: @item.Time</p>
-        <a class="waves-effect waves-light btn btn-info " href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
+    {<div class="card" style="box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15), 0 4px 8px rgba(0, 0, 0, 0.3); width: 400px; z-index:0; margin-left: 30%;">
+            <div class="card-image waves-effect waves-block waves-light">
+                <img class="activator" src="@Url.Action("RetrieveImage", "Recipe", new {item.RecipeId })" height=300 width=400>
+            </div>
+            <div class="card-content">
+                <span class="card-title activator grey-text text-darken-4" style="text-align:center;">@item.RecipeName</span>
+                <a class="waves-effect waves-light btn btn-info " href="/Recipe/Show/@item.RecipeId" style="margin-left:40%;">Details</a>
+            </div>
+            <div class="card-reveal">
+                <span class="card-title grey-text text-darken-4" style="text-align:center;">@item.RecipeName</span>
+                <br />
+
+                <p style="font-size:large">@item.Description</p>
+            </div>
+        </div>
+  
         <br /> <br />
     }
 
     @*<a class="btn btn-success" href="/Recipe/New">Add recipe</a>*@
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" style="margin-bottom: 5%; margin-left: 30%;">
         <ul class="pagination">
             <li>
                 @if (ViewBag.search != "")
