@@ -293,7 +293,7 @@ namespace FoodPlaner.Controllers
             ingredients = ingredients.Remove(ingredients.Length - 1);
             int time = obj.readyInMinutes;
             string description = obj.instructions;
-            Intolerances intolerances = obj.glutenFree;
+            List<string> intolerances = obj.glutenFree;
             string name = obj.title;
             Cusines cuisine = Cusines.Chinese;
             byte[] photo = obj.photo;

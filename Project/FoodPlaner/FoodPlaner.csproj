@@ -186,6 +186,10 @@
     <Compile Include="Migrations\202305142040208_addImage.designer.cs">
       <DependentUpon>202305142040208_addImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202305281614387_alter recipe.cs" />
+    <Compile Include="Migrations\202305281614387_alter recipe.designer.cs">
+      <DependentUpon>202305281614387_alter recipe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -290,6 +294,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202305142040208_addImage.resx">
       <DependentUpon>202305142040208_addImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202305281614387_alter recipe.resx">
+      <DependentUpon>202305281614387_alter recipe.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
