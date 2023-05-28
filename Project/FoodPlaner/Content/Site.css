@@ -64,6 +64,7 @@ div.recipe > p{
     margin: 3rem auto 4.1rem 3rem;
     width: 60%;
 }
+
 .waves-effect {
     position: relative;
     cursor: pointer;
@@ -179,4 +180,8 @@ div.recipe > p{
 
 .waves-effect .waves-ripple {
     z-index: -1
+}
+
+.field-validation-error{
+    color: red;
 }

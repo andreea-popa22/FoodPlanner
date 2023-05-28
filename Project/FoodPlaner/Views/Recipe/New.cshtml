@@ -1,16 +1,30 @@
 ﻿@model FoodPlaner.Models.Recipe
 
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <h1>Add recipe</h1>
 <hr />
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
 
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+</script>
 @using (Html.BeginForm("New", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(false, "", new { @class = ".textArea" })
+    @*@Html.ValidationSummary(false, "", new { @class = ".textArea" })*@
 
-    @Html.Label("RecipeName", "Recipe name")
     <br />
-    @Html.TextArea("RecipeName", null, new { @class = "form-control" })
+    <input placeholder="Recipe Name" id="first_name2" name="RecipeName" type="text" class="validate form-control">
     @Html.ValidationMessageFor(m => m.RecipeName, null, new { @class = ".textArea" })
     <br />
     <br />
@@ -31,22 +45,26 @@
 
     @Html.Label("Cuisine", "Cuisine")
     <br />
-    @Html.TextArea("Cuisine", null, new { @class = "form-control" })
+    @Html.DropDownListFor(m => m.Cuisine, Enum.GetValues(typeof(FoodPlaner.Enums.Cusines)).Cast<FoodPlaner.Enums.Cusines>().Select(i => new SelectListItem
+{
+    Text = i.ToString(),
+    Value = ((int)i).ToString()
+}).ToList(), "-- Select a cusine --", new { @class = "" })
     @Html.ValidationMessageFor(m => m.Cuisine, null, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Intolerances", "Intolerances")
     <br />
-    @Html.TextArea("Intolerances", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Intolerances, null, new { @class = ".textArea" })
+    @Html.ListBoxFor(m => m.Intolerances, new MultiSelectList(Enum.GetValues(typeof(FoodPlaner.Enums.Intolerances))), new { @class = "elect-dropdown dropdown-trigger"})
+ 
     <br />
     <br />
 
     @Html.Label("Time", "Time")
     <br />
     @Html.TextArea("Time", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Intolerances, null, new { @class = ".textArea" })
+    @Html.ValidationMessageFor(m => m.Time, null, new { @class = ".textArea" })
     <br />
     <br />
 

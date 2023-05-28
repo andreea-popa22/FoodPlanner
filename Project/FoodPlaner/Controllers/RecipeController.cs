@@ -1,4 +1,5 @@
-﻿using FoodPlaner.Models;
+﻿using FoodPlaner.Enums;
+using FoodPlaner.Models;
 using FoodPlaner.Repositories;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
@@ -292,9 +293,9 @@ namespace FoodPlaner.Controllers
             ingredients = ingredients.Remove(ingredients.Length - 1);
             int time = obj.readyInMinutes;
             string description = obj.instructions;
-            bool intolerances = obj.glutenFree;
+            Intolerances intolerances = obj.glutenFree;
             string name = obj.title;
-            string cuisine = "Universal";
+            Cusines cuisine = Cusines.Chinese;
             byte[] photo = obj.photo;
             if (obj.cuisines.Count > 0)
             {
