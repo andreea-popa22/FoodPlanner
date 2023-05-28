@@ -13,23 +13,24 @@
         <br />
         <br />
         <div class="container-fluid" style="width: 100%">
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="recipe panel panel-default radius-div">
                     <h2>@Model.RecipeName</h2>  
-                    <img src="@Url.Action("RetrieveImage", "Recipe", new {Model.RecipeId })" alt="" height=100 width=200 />
-                    <p> Author: @ViewBag.userName </p>
-                    <p> Ingredients:</p>
+                    <img src="@Url.Action("RetrieveImage", "Recipe", new {Model.RecipeId })" alt="" height=300 width=400 />
+                    <br/><br/>
+                    <p> <b>Author: </b> @ViewBag.userName </p>
+                    <p><b> Ingredients:</b></p>
                     <ul style="list-style-type:circle" id="ingredientList">
                         @foreach (string ingredient in Model.Ingredients.Split(','))
                         {
                             <li> @ingredient</li>
                         }
                     </ul>
-                    <p> Time: @Model.Time </p>
-                    <p> Description: </p>
-                    <p> @Model.Description</p>
-                    <p> Intolerances: @Model.Intolerances </p>
-                    <p> Cuisine: @Model.Cuisine </p>
+                    <p> <b>Time:</b> @Model.Time </p>
+                    <p><b> Description: </b> @Model.Description</p>
+                    
+                    <p> <b>Intolerances:</b> @Model.Intolerances </p>
+                    <p> <b>Cuisine:</b> @Model.Cuisine </p>
 
                     <div class="panel">
                         <a class="btn btn-primary pull-left" href="/Recipe/Index" style="margin-bottom: 1rem;">Back</a>
@@ -46,27 +47,28 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-2"></div>
             @if (@Model.Reviews != null && Model.Reviews.Count > 0)
             {
                 <div class="col-md-4">
-                    <p style="font-size:22px; font-weight:bold; text-align:center">Reviews</p>
+                    <p style="font-size:22px; font-weight:bold; margin-left: 20px">Reviews</p>
                     <div>
                         @foreach (var review in Model.Reviews)
                         {
-                            <div class="panel panel-default radius-div" style="width: 300px;">
-                                <div style="display:flex; flex-direction: row; width:fit-content; padding:7px">
-                                    <i class='fa fa-user' style='font-size:20px'></i>
+                            <div class="panel panel-default radius-div" style="width: 250px;">
+                                <div style="display:flex; flex-direction: row; width:fit-content; padding: 3px; margin-left:15px; margin-top:10px">
+                                    <i class='fa fa-user' style='font-size:22px'></i>
                                     <p style="padding-left:5px"> @review.User.Surname</p>
                                 </div>
-                                <div style="display: flex; flex-direction: row; width: fit-content; padding: 7px">
-                                    <i class='far fa-calendar-alt' style='font-size:20px'></i>
+                                <div style="display: flex; flex-direction: row; width: fit-content; padding: 3px; margin-left: 15px">
+                                    <i class='far fa-calendar-alt' style='font-size:22px'></i>
                                     <p style="padding-left:5px"> @review.Date.ToShortDateString()</p>
                                 </div>
-                                <div style="display: flex; flex-direction: row; width: fit-content; padding: 7px">
-                                    <i class='fas fa-star' style='font-size:20px'></i>
+                                <div style="display: flex; flex-direction: row; width: fit-content; padding: 3px; margin-left: 15px">
+                                    <i class='fas fa-star' style='font-size:22px'></i>
                                     <p style="padding-left:5px"> @review.Score</p>
                                 </div>
-                                <a class="btn btn-default" style="margin-left: 7px; margin-bottom: 7px" href="/Review/Show/@review.ReviewId">See content</a>
+                                <a class="btn btn-default" style="margin-left: 15px; margin-bottom: 10px" href="/Review/Show/@review.ReviewId">See content</a>
                                 <br />
                             </div>
                         }
