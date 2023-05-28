@@ -1,4 +1,5 @@
 ﻿body {
+
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -43,4 +44,23 @@ div.recipe > p{
     display: absolute;
     top: 0;
     right: 0
+}
+
+.customFooter {
+    position : fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f8f8; /* Customize the background color as needed */
+    padding: 20px;
+}
+
+#card {
+    background: #fbfbfb;
+    border-radius: 8px;
+    padding-top: 3%;
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.65);
+    height: 350px;
+    margin: 3rem auto 4.1rem 3rem;
+    width: 60%;
 }

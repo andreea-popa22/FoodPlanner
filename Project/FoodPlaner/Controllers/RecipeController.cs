@@ -51,12 +51,14 @@ namespace FoodPlaner.Controllers
             {
                 Response.Redirect("/Account/Login");
             }
-                ViewBag.sorted = sorted;
+            
+            ViewBag.sorted = sorted;
             TempData["ddlOption"] = ddFilterOption == "" ? "0" : ddFilterOption;
-            //var dbRecipes = from r in recipeRepository.GetRecipes()
-            //              select r;
+            var dbRecipes = from r in recipeRepository.GetRecipes()
+                            select r;
 
-            var dbRecipes = db.Recipes.ToList();
+            dbRecipes = db.Recipes.ToList();
+            var recipes = dbRecipes;
 
             //UNCOMMENT THOSE 2 LINES FOR CALLING THE API
             //List<Recipe> APIRecipes = await GetRecipesFromAPI();
@@ -65,7 +67,7 @@ namespace FoodPlaner.Controllers
             if (Request.Params.Get("search") != null)
             {
                 search = Request.Params.Get("search").Trim();
-                recipes = recipes.Where(rp => rp.RecipeName.ToLower().Contains(search.ToLower()))
+                recipes = dbRecipes.Where(rp => rp.RecipeName.ToLower().Contains(search.ToLower()))
                            .ToList();
             }
 
