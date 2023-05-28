@@ -21,7 +21,8 @@ namespace FoodPlaner.Models
         public string Description { get; set; }
         [Required(ErrorMessage = "Please enter the time")]
         public int Time { get; set; }
-        public List<string> Intolerances { get; set; }
+        public string Intolerances { get; set; }
+        public List<string> IntolerancesList { get; set; }
         [Required(ErrorMessage = "Please enter the cusine or select none")]
         public Cusines Cuisine { get; set; }
 
@@ -31,7 +32,7 @@ namespace FoodPlaner.Models
 
         public Recipe() { }
 
-        public Recipe(int id, string recipeName, string userId, string ingredients, string description, int time, List<string> intolerances, Cusines cuisine, byte[] photo)
+        public Recipe(int id, string recipeName, string userId, string ingredients, string description, int time, string intolerances, Cusines cuisine, byte[] photo, List<string> intolerancesList = null)
         {
             RecipeId = id;
             RecipeName = recipeName;

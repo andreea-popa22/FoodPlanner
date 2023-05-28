@@ -137,7 +137,7 @@ namespace FoodPlaner.Controllers
 
         //POST
         [HttpPost]
-        public ActionResult New(Recipe recipe)
+        public ActionResult New(Recipe recipe, string selectedIntolerances)
         {
             recipe.UserId = User.Identity.GetUserId();
             HttpPostedFileBase photo = Request.Files["recipeImage"];
@@ -293,7 +293,7 @@ namespace FoodPlaner.Controllers
             ingredients = ingredients.Remove(ingredients.Length - 1);
             int time = obj.readyInMinutes;
             string description = obj.instructions;
-            List<string> intolerances = obj.glutenFree;
+            string intolerances = obj.glutenFree;
             string name = obj.title;
             Cusines cuisine = Cusines.Chinese;
             byte[] photo = obj.photo;

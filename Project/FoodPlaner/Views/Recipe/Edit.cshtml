@@ -1,50 +1,79 @@
 ﻿@model FoodPlaner.Models.Recipe
 
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <h1>Edit recipe</h1>
 <hr />
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var elems = document.querySelectorAll('select');
+        var instances = M.FormSelect.init(elems, {});
+    });
 
+    $(document).ready(function () {
+        $('select').formSelect();
+    });
+</script>
 @using (Html.BeginForm("Edit", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(false, "", new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    @*@Html.ValidationSummary(false, "", new { @class = ".textArea" })*@
 
-    @Html.Label("RecipeName", "Recipe name")
     <br />
-    @Html.TextBox("RecipeName", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.RecipeName, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    <input placeholder="Recipe Name" id="first_name2" name="RecipeName" type="text" class="validate form-control">
+    @Html.ValidationMessageFor(m => m.RecipeName, Model.RecipeName, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Ingredients", "Ingredients")
     <br />
-    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 200px;" })
-    @Html.ValidationMessageFor(m => m.Ingredients, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    @Html.TextArea("Ingredients", null, new { @class = "form-control", style = "min-height: 100px;" })
+    @Html.ValidationMessageFor(m => m.Ingredients, null, new { @class = ".textArea" })
+    <br />
+    <br />
+
+    @Html.Label("Description", "Recipe description")
+    <br />
+    @Html.TextArea("Description", null, new { @class = "form-control", style = "min-height: 200px;" })
+    @Html.ValidationMessageFor(m => m.Description, null, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Cuisine", "Cuisine")
     <br />
-    @Html.TextArea("Cuisine", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Cuisine, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    @Html.DropDownListFor(m => m.Cuisine, Enum.GetValues(typeof(FoodPlaner.Enums.Cusines)).Cast<FoodPlaner.Enums.Cusines>().Select(i => new SelectListItem
+{
+    Text = i.ToString(),
+    Value = ((int)i).ToString()
+}).ToList(), "-- Select a cusine --", new { @class = "" })
+    @Html.ValidationMessageFor(m => m.Cuisine, null, new { @class = ".textArea" })
     <br />
     <br />
 
     @Html.Label("Intolerances", "Intolerances")
     <br />
-    @Html.TextArea("Intolerances", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Intolerances, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    @Html.ListBoxFor(m => m.IntolerancesList, new MultiSelectList(Enum.GetValues(typeof(FoodPlaner.Enums.Intolerances))), new { @class = "elect-dropdown dropdown-trigger" })
 
     <br />
     <br />
+
     @Html.Label("Time", "Time")
     <br />
     @Html.TextArea("Time", null, new { @class = "form-control" })
-    @Html.ValidationMessageFor(m => m.Intolerances, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
-
-
-    //@Html.ValidationMessageFor(m => m.Photo, null, new { style = "color: #F8EFBA;text-shadow: 2px 2px #ff0000; font-style: italic;" })
+    @Html.ValidationMessageFor(m => m.Time, null, new { @class = ".textArea" })
     <br />
     <br />
 
-    <button class="btn btn-lg btn-success" style="background-color: #25CCF7; box-shadow: 0 10px 10px #D6A2E8;" type="submit">Save changes </button>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Photo)
+        <input type="file" name="recipeImage" id="recipeImage" />
+        @Html.ValidationMessageFor(model => model.Photo)
+    </div>
+
+
+    <button class="btn btn-lg btn-success" style="background-color: #25CCF7;" type="submit">Save changes</button>
 }

@@ -56,7 +56,7 @@
 
     @Html.Label("Intolerances", "Intolerances")
     <br />
-    @Html.ListBoxFor(m => m.Intolerances, new MultiSelectList(Enum.GetValues(typeof(FoodPlaner.Enums.Intolerances))), new { @class = "elect-dropdown dropdown-trigger"})
+    @Html.ListBoxFor(m => m.IntolerancesList, new MultiSelectList(Enum.GetValues(typeof(FoodPlaner.Enums.Intolerances))), new { @class = "elect-dropdown dropdown-trigger"})
  
     <br />
     <br />
