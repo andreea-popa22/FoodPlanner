@@ -1,6 +1,9 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Recipes</title>
@@ -62,24 +65,24 @@
                                        placeholder="Search topics or keywords">
                                 <!--end of col-->
 
-                                <button class="btn btn-lg btn-success" style="position:absolute; top:0%; left:40%; font-size:14px; padding:0.9%"
+                                <button class="btn btn-lg btn-success waves-effect waves-light" style="position:absolute; top:0%; left:40%; font-size:14px; padding:0.9%"
                                         type="submit">
                                     Search
                                 </button>
                                 @if (ViewBag.sorted == null || ViewBag.sorted == "")
                                 {
-                                    <a id ="srt" class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Sort</a>
+                                    <a id="srt" class="btn btn-primary btn-lg waves-effect waves-light" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=sorted&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Sort</a>
                                 }
                                 else
                                 {
-                                    <a id ="srt" class="btn btn-primary btn-lg" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Unsort</a>
+                                    <a id="srt" class="btn btn-primary btn-lg waves-effect waves-light" style="position: absolute; top: 0%; left: 50%; font-size: 14px; padding: 0.9%" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=&ddlFilterOption=@TempData["ddlOption"]" onclick="test()">Unsort</a>
                                 }
 
 
                                 @using (Html.BeginForm("Index", "Recipe", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                 {
                                     <select id="ddlFilter" style="position: absolute; top: 0%; left: 60%; font-size: 14px; padding: 0.95%" name="ddFilterOption" onchange="this.form.submit()" href="/Recipe/Index?&search=@ViewBag.SearchString&sorted=@ViewBag.sorted&ddlFilterOption=@TempData["ddlOption"]">
-                                        
+
                                         <option value=0>None</option>
                                         <option value=1>&lt;30 min</option>
                                         <option value=2>30-60 min</option>
@@ -87,22 +90,22 @@
                                         <option value=4>&gt;90 min</option>
                                     </select>
                                     @*@Html.DropDownList("Chose", new List<SelectListItem>
-            {
-               new SelectListItem{ Text="None", Value = "0" },
-               new SelectListItem{ Text="<30 min", Value = "1" },
-               new SelectListItem{ Text="30-60 min", Value = "2" },
-               new SelectListItem{ Text="60-90 min", Value = "3" },
-               new SelectListItem{ Text=">90 min", Value = "4" },
+                                        {
+                                           new SelectListItem{ Text="None", Value = "0" },
+                                           new SelectListItem{ Text="<30 min", Value = "1" },
+                                           new SelectListItem{ Text="30-60 min", Value = "2" },
+                                           new SelectListItem{ Text="60-90 min", Value = "3" },
+                                           new SelectListItem{ Text=">90 min", Value = "4" },
 
-            })*@
+                                        })*@
                                 }
-                                <a class="btn btn-primary" style="position:absolute; margin-left: 80%; top:0%" href="/Recipe/New">
+                                <a class="btn btn-primary waves-effect waves-light" style="position:absolute; margin-left: 80%; top:0%" href="/Recipe/New">
                                     Add new recipe
                                 </a>
                             </div>
-                            </div>
-                            <!--end of col-->
                         </div>
+                        <!--end of col-->
+                    </div>
                 </form>
             </div>
             <!--end of col-->
@@ -118,7 +121,7 @@
         <h2>@item.RecipeName</h2>
         <p>Ingredients: @item.Ingredients</p>
         <p>Time: @item.Time</p>
-        <a class="btn btn-info pull-left" href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
+        <a class="waves-effect waves-light btn btn-info " href="/Recipe/Show/@item.RecipeId" style="margin-left:5px;">Details</a>
         <br /> <br />
     }
 
