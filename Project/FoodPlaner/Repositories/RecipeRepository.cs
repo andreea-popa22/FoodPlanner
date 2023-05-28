@@ -37,7 +37,7 @@ namespace FoodPlaner.Repositories
 
         public void InsertRecipe(Recipe recipe)
         {
-            recipe.Intolerances = string.Join(", ", recipe.IntolerancesList);
+            recipe.Intolerances = recipe.IntolerancesList == null ? null : string.Join(", ", recipe.IntolerancesList);
             context.Recipes.Add(recipe);
         }
 

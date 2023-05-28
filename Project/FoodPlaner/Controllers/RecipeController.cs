@@ -201,10 +201,11 @@ namespace FoodPlaner.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(int id, Recipe requestRecipe, HttpPostedFileBase photo)
+        public ActionResult Edit(int id, Recipe requestRecipe)
         {
             try
             {
+                HttpPostedFileBase photo = Request.Files["recipeImage"];
                 Recipe recipe = recipeRepository.GetRecipeByID(id);
                 if (TryUpdateModel(recipe))
                 {
@@ -222,7 +223,7 @@ namespace FoodPlaner.Controllers
                     recipe.RecipeName = requestRecipe.RecipeName;
                     recipe.Ingredients = requestRecipe.Ingredients;
                     recipe.Description = requestRecipe.Description;
-                    recipe.Intolerances = requestRecipe.Intolerances;
+                    recipe.Intolerances = recipe.IntolerancesList == null ? null : string.Join(", ", recipe.IntolerancesList);
                     recipe.Time = requestRecipe.Time;
                     recipe.Cuisine = requestRecipe.Cuisine;
                     recipeRepository.UpdateRecipe(recipe);

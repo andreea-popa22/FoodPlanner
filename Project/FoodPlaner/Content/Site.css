@@ -185,3 +185,7 @@ div.recipe > p{
 .field-validation-error{
     color: red;
 }
+
+.caret{
+    display: none;
+}
